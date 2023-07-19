@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
       calification: {
         type: DataTypes.STRING,
       },
-      userId: {
+      customerId: {
         type: DataTypes.STRING,
       },
     },
