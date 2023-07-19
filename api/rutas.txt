@@ -1,28 +1,35 @@
 RUTAS:
-    /PRODUCTOS:
-     GET - http://localhost:3001/categories                      (retorna todas las categorías)
-     GET - http://localhost:3001/products                        (retorna todos los productos)
-     GET - http://localhost:3001/products?name=nombre%20del%20producto (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
-     GET - http://localhost:3001/product/id                      (retorna detalle del producto)
-     GET - http://localhost:3001/product/reviews/id              (retorna todas las reviews del producto)
 
-     POST - http://localhost:3001/create/product                 (crea un nuevo producto) 
-     PUT - http://localhost:3001/update/product                  (modifica un producto)
-     DELETE - http://localhost:3001/delete/product               (borra un producto)
+    // Routers configuration
+    router.use("/products", productsRoute);
+    router.use("/clients", clientsRoute);
+    router.use("/admin", adminRoute);
+
+
+    /PRODUCTOS:
+     GET - http://localhost:3001/products/categories                (retorna todas las categorías)
+     GET - http://localhost:3001/products                           (retorna todos los productos)
+     GET - http://localhost:3001/products?name=nombre%20del%20producto (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
+     GET - http://localhost:3001/products/id                        (retorna detalle del producto)
+     GET - http://localhost:3001/products/reviews/id                (retorna todas las reviews del producto)
 
 
 
     /CLIENTES:
-     GET - http://localhost:3001/clients                        (retorna todos los clientes)
-     GET - http://localhost:3001/clients/id                     (retorna datos del cliente)
-     GET - http://localhost:3001/clients/reviews                (retorna todas las reviews del cliente)
+     GET - http://localhost:3001/clients/id                         (retorna datos del cliente)
+     GET - http://localhost:3001/clients/reviews                    (retorna todas las reviews del cliente)
      
-     POST - http://localhost:3001/new/client                    (crea un nuevo cliente)
-     PUT - http://localhost:3001/update/client                  (modifica los datos de un cliente)
-     DELETE - http://localhost:3001/update/client               (elimina a un cliente)
+     POST - http://localhost:3001/clients/new                       (crea un nuevo cliente)
+     PUT - http://localhost:3001/clients/update/id                  (modifica los datos de un cliente)
+     DELETE - http://localhost:3001/clients/update/id               (elimina a un cliente)
 
 
 
     /ADMINISTRADOR
-     GET - http://localhost:3001/sales                           (retorna todas las ventas hechas)
-     GET - http://localhost:3001/orders                          (retorna todas las ventas pendientes)
+     GET - http://localhost:3001/admin/sales                        (retorna todas las ventas hechas)
+     GET - http://localhost:3001/admin/orders                       (retorna todas las ventas pendientes)
+     GET - http://localhost:3001/admin/clients                      (retorna todos los clientes)
+
+     POST - http://localhost:3001/admin/create/product              (crea un nuevo producto) 
+     PUT - http://localhost:3001/admin/update/product               (modifica un producto)
+     DELETE - http://localhost:3001/admin/delete/product            (borra un producto)
