@@ -32,9 +32,6 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue:true
       }
-      ,
-      default_shipping_address: {
-        type: DataTypes.TEXT,
-      },
+      ,      
     }, { timestamps: false });
 };
