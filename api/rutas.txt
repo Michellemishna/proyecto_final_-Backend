@@ -21,7 +21,7 @@ RUTAS:
      
      POST - http://localhost:3001/clients/new                       (crea un nuevo cliente)
      PUT - http://localhost:3001/clients/update/id                  (modifica los datos de un cliente)
-     DELETE - http://localhost:3001/clients/update/id               (elimina a un cliente)
+     DELETE - http://localhost:3001/clients/delete/id               (elimina a un cliente)
 
 
 
