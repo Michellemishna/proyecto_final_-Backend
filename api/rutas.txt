@@ -9,8 +9,10 @@ RUTAS:
     /PRODUCTOS:
      GET - http://localhost:3001/products/categories      terminada          (retorna todas las categorías)
      GET - http://localhost:3001/products                 terminada          (retorna todos los productos)
-     GET - http://localhost:3001/products?name=nombre%20del%20producto (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
-     GET - http://localhost:3001/products/id                        (retorna detalle del producto)
+     GET - http://localhost:3001/products?name=nombre%20del%20producto       (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
+     GET - http://localhost:3001/products/id           pendiente revision    (retorna detalle del producto)
+     POST- http://localhost:3001/products/                terminada          (crea un producto)
+
      GET - http://localhost:3001/products/reviews/id                (retorna todas las reviews del producto)
 
 
