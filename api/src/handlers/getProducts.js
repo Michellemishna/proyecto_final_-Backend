@@ -1,4 +1,4 @@
-const {getDb, findAllApi} = require("../controllers/findAllApi")
+const {findDb, findAllApi} = require("../controllers/findAllApi")
 const { Product } = require("../db");
 const { Op } = require("sequelize");
 

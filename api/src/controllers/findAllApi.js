@@ -2,14 +2,15 @@ const { Product, Category } =require("../db");
 const axios = require("axios");
 const clearProductsApi = require("./clearProductsApi");
 
-const getDb = async () => {
+const findDb = async () => {
     const foundDate = await Product.findAll({include: { model: Category , attributes:["id","name"],throught:{attributes:[]}}});
     return foundDate;
   };
 
 
 const findAllApi = async () => {
-    const URL="https://api.mercadolibre.com/sites/MLA/search?category=MLA1648"
+    const URL="https://api.mercadolibre.com/sites/MLA/search?category=MLA1648";
+    
     const apiUrl = (await axios.get(URL)).data.results;
     const responseAPI = await axios.all(apiUrl)
     const ApiProducts = clearProductsApi(responseAPI);
@@ -28,9 +29,6 @@ await ApiProducts.map(async (e) => {
 
 }
 
-const getDbCategory = async () => {
-    const searchCategory = await Category.findAll({include: { all:true}});
-    return searchCategory;
-}
 
-module.exports = {getDb,findAllApi, getDbCategory};
+
+module.exports = {findDb,findAllApi};
