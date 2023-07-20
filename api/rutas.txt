@@ -37,7 +37,28 @@ router.use("/admin", adminRoute);
  GET - http://localhost:3001/admin/orders                       (retorna todas las ventas pendientes)
  GET - http://localhost:3001/admin/clients                      (retorna todos los clientes)
 
- POST   - http://localhost:3001/admin/create/product            (crea un nuevo producto) 
+✔️POST   - http://localhost:3001/admin/create                   (crea un usuario admin) 
  PUT    - http://localhost:3001/admin/update/product            (modifica un producto)
  DELETE - http://localhost:3001/admin/delete/product            (borra un producto)
+
+
+
+
+
+ ____________________________________________________________________________________________
+/__________________________________  GUÍA PARA EL FRONT  ___________________________________/
+
+
+Cómo enviar request POST y PUT.
+
+
+http://localhost:3001/admin/create
+      {
+        "name": "Master Admin",
+        "user": "Master Admin",
+        "password": "12345",
+        "image": "https://cdn-icons-png.flaticon.com/256/4712/4712038.png",
+        "email": "proyecto-final@gmail.com",
+        "phone": "0303456"
+      }
 
