@@ -1,5 +1,5 @@
 const clearProductsApi =(arr) =>
-    arr.map((product) => {
+    arr.flat().map((product) => {
         return{
             id:product.id,
             title:product.title,

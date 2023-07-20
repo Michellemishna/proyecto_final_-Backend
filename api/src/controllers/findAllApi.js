@@ -9,19 +9,28 @@ const getDb = async () => {
 
 
 const findAllApi = async () => {
-    const apiUrl = (await axios.get("https://api.mercadolibre.com/sites/MLA/search?category=MLA1648")).data.results;
+    const URL="https://api.mercadolibre.com/sites/MLA/search?category=MLA1648"
+    const apiUrl = (await axios.get(URL)).data.results;
     const responseAPI = await axios.all(apiUrl)
     const ApiProducts = clearProductsApi(responseAPI);
 
 //cargo los productos a db con categoría
-return ApiProducts
+await ApiProducts.map(async (e) => {
+      const foundCategories = await Category.findByPk(e.category);
+      const newProduct = await Product.create(e);
+      await newProduct.addCategory(foundCategories);
+      return newProduct;
+    })
+  
+
+  let dataDb = await Product.findAll({include: { all: true }});
+  return dataDb;
+
 }
 
+const getDbCategory = async () => {
+    const searchCategory = await Category.findAll({include: { all:true}});
+    return searchCategory;
+}
 
-
-
-
-  
- 
-
-module.exports = {getDb,findAllApi};
+module.exports = {getDb,findAllApi, getDbCategory};
