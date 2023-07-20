@@ -8,6 +8,7 @@ const getAllProducts =async (req, res) => {
     try {
         let result = cargo ? await Product.findAll({ include: { all: true } }) : await findAllApi()
         cargo = true;
+        console.log(result);
     
         if (name) {
           let filtrado = await Product.findAll({ where: { title: { [Op.iLike]: `%${name}%` } }, include: { all: true } })
