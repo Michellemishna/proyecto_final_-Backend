@@ -3,14 +3,11 @@ const { Router } = require('express');
 const router = Router();
 
 // Importar todos los routers
-const getProducts = require('../handlers/getProducts');
-const getCategories = require('../handlers/getCategories');
 const clientsRoute = require('../handlers/clientsRoute');
 const adminRoute = require('../handlers/adminRoute')
+const rout = require('./product.router')
 
-
-router.get('/', getProducts);
-router.get('/products/categories', getCategories);
+router.use('/products', rout);
 router.use('/clients', clientsRoute);
 router.use('/admin', adminRoute);
 
