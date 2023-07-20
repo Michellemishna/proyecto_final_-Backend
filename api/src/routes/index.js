@@ -1,13 +1,11 @@
 const { Router } = require('express');
-
+const getProducts = require('../handlers/getProducts');
 // Importar todos los routers;
 const router = Router();
 // Configurar los routers
 
 
-router.get('/home', (req,res) => {
-    res.send('hola')
-});
+router.get('/', getProducts);
 
 
 
