@@ -1,4 +1,3 @@
- _________________________________________________________________________________________________
 /____________________________________________ RUTAS _____________________________________________/
 
 
@@ -6,6 +5,7 @@
 router.use("/products", productsRoute);
 router.use("/clients", clientsRoute);
 router.use("/admin", adminRoute);
+router.use("/filter-sorts", filterSortsRoute)
 
 
 
@@ -13,11 +13,14 @@ router.use("/admin", adminRoute);
 ✔️GET   - http://localhost:3001/products/categories              (retorna todas las categorías)
 ✔️GET   - http://localhost:3001/products                         (retorna todos los productos)
   GET   - http://localhost:3001/products?name=nombre%20del%20producto       (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
-⏳GET   - http://localhost:3001/products/id           pendiente revision    (retorna detalle del producto)
-✔️POST  - http://localhost:3001/products/                        (crea un producto)
+⏳GET   - http://localhost:3001/products/id                       (retorna detalle del producto)
+✔️POST  - http://localhost:3001/products/                         (crea un producto)
 
   GET - http://localhost:3001/products/reviews/id                (retorna todas las reviews del producto)
+ 
 
+/FILTRADO Y ORDENAMIENTO:
+⏳GET -  http://localhost:3001/filter-sorts/selection?category=electronics&price_min=100&price_max=500&sort_by=price&order=asc      (Filtra por categoría, por precio mayor a X y menor a X. Ordena por mayor y menor precio. )
 
 
 /CLIENTES:
@@ -55,7 +58,7 @@ Cómo enviar request POST y PUT.
 http://localhost:3001/admin/create
       {
         "name": "Master Admin",
-        "user": "Master Admin",
+        "user": "Master_Admin",
         "password": "12345",
         "image": "https://cdn-icons-png.flaticon.com/256/4712/4712038.png",
         "email": "proyecto-final@gmail.com",
