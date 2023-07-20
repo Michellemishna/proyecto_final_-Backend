@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const router = Router();
+const { createAdmin } = require('../controllers/adminControllers')
 
 
 // GET:
@@ -34,13 +35,18 @@ router.get("/clients", async (req, res) => {
 
 
 //POST
-router.post("/create/product", async (req, res) => {
+
+//crea nuevo admin
+router.post("/create", async (req, res) => {
     try {
-        
+        const newAdmin = req.body;
+        const create = await createAdmin(newAdmin);
+        res.status(201).send(create)
     } catch (error) {
-        
+        res.status(400).send({ message: error.message });
     }
 });
+
 
 
 
