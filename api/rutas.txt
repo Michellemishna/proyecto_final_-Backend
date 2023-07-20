@@ -44,8 +44,10 @@ router.use("/admin", adminRoute);
 
 
 
+
  ____________________________________________________________________________________________
 /__________________________________  GUÍA PARA EL FRONT  ___________________________________/
+
 
 Cómo enviar request POST y PUT.
 
@@ -59,3 +61,4 @@ http://localhost:3001/admin/create
         "email": "proyecto-final@gmail.com",
         "phone": "0303456"
       }
+
