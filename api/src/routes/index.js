@@ -1,21 +1,16 @@
 const { Router } = require('express');
-const getProducts = require('../handlers/getProducts');
-const getCategories = require('../handlers/getCategories');
-// Importar todos los routers;
+
 const router = Router();
 
 // Importar todos los routers
 const getProducts = require('../handlers/getProducts');
+const getCategories = require('../handlers/getCategories');
 const clientsRoute = require('../handlers/clientsRoute');
 const adminRoute = require('../handlers/adminRoute')
 
 
-
-// Configurar los routers
-
-
-router.get('/products/categories', getCategories);
 router.get('/', getProducts);
+router.get('/products/categories', getCategories);
 router.use('/clients', clientsRoute);
 router.use('/admin', adminRoute);
 
