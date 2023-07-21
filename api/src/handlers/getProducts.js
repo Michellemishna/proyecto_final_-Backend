@@ -9,7 +9,6 @@ const getAllProducts =async (req, res) => {
     try {
         let result = cargo ? await Product.findAll({ include: { all: true } }) : await findAllApi()
         cargo = true;
-        console.log(result);
     
         if (name) {
           let filtrado = await Product.findAll({ where: { title: { [Op.iLike]: `%${name}%` } }, include: { all: true } })
@@ -52,10 +51,7 @@ const getDescription = async (req, res) => {
   const UrlDescription ="https://api.mercadolibre.com/items/"
   try {
     const description = (await axios.get(`${UrlDescription}${id}/description`)).data.plain_text;
-    
-    const searchProduc = await Product.findByPk(id);
-    await searchProduc.map(await Product.addDescription(description))
-        
+    res.send(description);
   } catch (error) {
     console.log(error)
   }
@@ -104,5 +100,4 @@ const deleteProduct = async (req, res) => {
 }
 
 
-
-    module.exports = {getAllProducts, getProductId, getPicture, getDescription, postNewProduct, deleteProduct};
+ module.exports = {getAllProducts, getProductId, getPicture, getDescription, postNewProduct, deleteProduct};
