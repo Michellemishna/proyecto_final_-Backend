@@ -9,23 +9,26 @@ const findDb = async () => {
 
 
 const findAllApi = async () => {
-    const URL="https://api.mercadolibre.com/sites/MLA/search?category=MLA1648";
+    const count = await Product.count();
+
+    if (count === 0){
+
+        const URL="https://api.mercadolibre.com/sites/MLA/search?category=MLA1648";
+        
+        const apiUrl = (await axios.get(URL)).data.results;
+        const responseAPI = await axios.all(apiUrl)
+        const ApiProducts = clearProductsApi(responseAPI);
     
-    const apiUrl = (await axios.get(URL)).data.results;
-    const responseAPI = await axios.all(apiUrl)
-    const ApiProducts = clearProductsApi(responseAPI);
-
-//cargo los productos a db con categoría
-await ApiProducts.map(async (e) => {
-      const foundCategories = await Category.findByPk(e.category);
-      const newProduct = await Product.create(e);
-      await newProduct.addCategory(foundCategories);
-      return newProduct;
-    })
-  
-
-  let dataDb = await Product.findAll({include: { all: true }});
-  return dataDb;
+    //cargo los productos a db con categoría
+    await ApiProducts.map(async (e) => {
+          const foundCategories = await Category.findByPk(e.category);
+          const newProduct = await Product.create(e);
+          await newProduct.addCategory(foundCategories);
+          return newProduct;
+        })
+      }
+      let dataDb = await Product.findAll({include: { all: true }});
+      return dataDb;
 
 }
 
