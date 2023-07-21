@@ -1,4 +1,5 @@
 const {findDb, findAllApi} = require("../controllers/findAllApi")
+const axios = require("axios");
 const { Product, Category } = require("../db");
 const { Op } = require("sequelize");
 
@@ -35,6 +36,32 @@ const getProductId = async (req, res) => {
   }
 }
 
+const getPicture = async (req, res) => {
+  const { id } = req.params;
+  const UrlPicture ="https://api.mercadolibre.com/items/"
+  try {
+    const pictures = await axios.get( `${UrlPicture}${id}`);
+    pictures.length ? res.send(pictures.data.pictures.map(r => r.url)) : null;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const getDescription = async (req, res) => {
+  const { id } = req.params;
+  const UrlDescription ="https://api.mercadolibre.com/items/"
+  try {
+    const description = (await axios.get(`${UrlDescription}${id}/description`)).data.plain_text;
+    
+    const searchProduc = await Product.findByPk(id);
+    await searchProduc.map(await Product.addDescription(description))
+        
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
 const postNewProduct = async (req, res) => {
   try {
     const { title, image, price, stock, category, sold } = req.body;
@@ -65,4 +92,17 @@ const postNewProduct = async (req, res) => {
   }
 };
 
-    module.exports = {getAllProducts, getProductId, postNewProduct};
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const removed = await Product.destroy({ where: { id } });
+    if (removed) return res.send("Producto Eliminado");
+    res.send("ID no existe");
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+}
+
+
+
+    module.exports = {getAllProducts, getProductId, getPicture, getDescription, postNewProduct, deleteProduct};

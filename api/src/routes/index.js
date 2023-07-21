@@ -5,9 +5,11 @@ const router = Router();
 // Importar todos los routers
 const clientsRoute = require('../handlers/clientsRoute');
 const adminRoute = require('../handlers/adminRoute')
-const rout = require('./product.router')
+const categoriesRouter = require("./categoriesRoute");
+const productRouter = require("./productRoute");
 
-router.use('/products', rout);
+router.use('/products', productRouter);
+router.use("/categories", categoriesRouter);
 router.use('/clients', clientsRoute);
 router.use('/admin', adminRoute);
 
