@@ -13,7 +13,7 @@ router.use("/filter-sorts", filterSortsRoute)
 ✔️GET   - http://localhost:3001/products/categories              (retorna todas las categorías)
 ✔️GET   - http://localhost:3001/products                         (retorna todos los productos)
 ✔️GET   - http://localhost:3001/products?name=nombre%20del%20producto       (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
-✔️GET   - http://localhost:3001/products/id           pendiente revision    (retorna detalle del producto)
+✔️GET   - http://localhost:3001/products/id                      (retorna detalle del producto)
 ✔️POST  - http://localhost:3001/products/                        (crea un producto)
 ✔️DELETE - http://localhost:3001/products/                       (eliminar un producto)
 
@@ -21,7 +21,7 @@ GET - http://localhost:3001/products/reviews/id                (retorna todas la
  
 
 /FILTRADO Y ORDENAMIENTO:
-⏳GET -  http://localhost:3001/filter-sorts/selection?category=electronics&price_min=100&price_max=500&sort_by=price&order=asc      (Filtra por categoría, por precio mayor a X y menor a X. Ordena por mayor y menor precio. )
+✔️GET -  http://localhost:3001/filter-sorts/selection?category=electronics&price_min=100&price_max=500&sort_by=price&order=asc      (Filtra por categoría, por precio mayor a X y menor a X. Ordena por mayor y menor precio. )
 
 
 /CLIENTES:
@@ -42,8 +42,8 @@ GET - http://localhost:3001/products/reviews/id                (retorna todas la
  GET - http://localhost:3001/admin/clients                      (retorna todos los clientes)
 
 ✔️POST   - http://localhost:3001/admin/create                   (crea un usuario admin) 
- PUT    - http://localhost:3001/admin/update/product            (modifica un producto)
- DELETE - http://localhost:3001/admin/delete/product            (borra un producto)
+ ⏳PUT    - http://localhost:3001/admin/update/product            (modifica un producto)
+ ⏳DELETE - http://localhost:3001/admin/delete/product            (borra un producto)
 
 
 
@@ -53,10 +53,9 @@ GET - http://localhost:3001/products/reviews/id                (retorna todas la
 /__________________________________  GUÍA PARA EL FRONT  ___________________________________/
 
 
-Cómo enviar request POST y PUT.
 
-
-http://localhost:3001/admin/create
+//CREAR ADMIN
+POST  - http://localhost:3001/admin/create
       {
         "name": "Master Admin",
         "user": "Master_Admin",
@@ -65,4 +64,21 @@ http://localhost:3001/admin/create
         "email": "proyecto-final@gmail.com",
         "phone": "0303456"
       }
+
+
+
+
+//FILTRAR Y ORDENAR PRODUCTOS
+GET -  http://localhost:3001/filter-sorts/selection?category=MLA1321622215&price_min=100&price_max=500&sort_by=price&order=asc 
+
+Rellenar los parámetros:
+  category: Categoría de productos que deseas filtrar.
+  price_min: Precio mínimo de los productos.
+  price_max: Precio máximo de los productos.
+  sort_by: Criterio de ordenación (disponible solo "price" por ahora).
+  order: Orden de clasificación ("asc" para ascendente o "desc" para descendente).   
+
+Los parámetros sin rellenar, no se aplicarán:   
+  http://localhost:3001/filter-sorts/selection?category=&price_min=&price_max=&sort_by=price&order=asc
+  (acá solo aplica el ordenamiento)
 
