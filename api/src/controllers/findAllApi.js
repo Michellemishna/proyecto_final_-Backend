@@ -16,7 +16,7 @@ const findAllApi = async () => {
         
         const apiUrl = (await axios.get(URL)).data.results;
         const responseAPI = await axios.all(apiUrl)
-        const ApiProducts = clearProductsApi(responseAPI);
+        //const ApiProducts = clearProductsApi(responseAPI);
     
     const clearProductsApi = responseAPI.flat().map((product) => ({
             id:product.id,
