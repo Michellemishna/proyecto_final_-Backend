@@ -41,7 +41,7 @@ await Promise.all (clearProductsApi.map(async (e) => {
   let dataDb = await Product.findAll({include: { all: true }});
   return dataDb;
 }
-
+}
 const findCategoryDB = async () => {
   const searchCategory = await Category.findAll({include: { all:true}});
   return searchCategory;
