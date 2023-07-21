@@ -8,12 +8,16 @@ const findDb = async () => {
 
 
 const findAllApi = async () => {
-    const URL="https://api.mercadolibre.com/sites/MLA/search?category=MLA1648";
+    const count = await Product.count();
+
+    if (count === 0){
+
+        const URL="https://api.mercadolibre.com/sites/MLA/search?category=MLA1648";
+        
+        const apiUrl = (await axios.get(URL)).data.results;
+        const responseAPI = await axios.all(apiUrl)
+        const ApiProducts = clearProductsApi(responseAPI);
     
-    const apiUrl = (await axios.get(URL)).data.results;
-    const responseAPI = await axios.all(apiUrl)
-
-
     const clearProductsApi = responseAPI.flat().map((product) => ({
             id:product.id,
             title:product.title,
@@ -36,7 +40,6 @@ await Promise.all (clearProductsApi.map(async (e) => {
 );
   let dataDb = await Product.findAll({include: { all: true }});
   return dataDb;
-
 }
 
 const findCategoryDB = async () => {
