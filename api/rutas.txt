@@ -17,7 +17,6 @@ router.use("/filter-sorts", filterSortsRoute)
 ✔️POST  - http://localhost:3001/products/                        (crea un producto)
 ✔️DELETE - http://localhost:3001/products/                       (eliminar un producto)
 
-GET - http://localhost:3001/products/reviews/id                (retorna todas las reviews del producto)
  
 
 /FILTRADO Y ORDENAMIENTO:
@@ -25,15 +24,17 @@ GET - http://localhost:3001/products/reviews/id                (retorna todas la
 
 
 /CLIENTES:
- GET - http://localhost:3001/clients/id                         (retorna datos del cliente)
- GET - http://localhost:3001/clients/reviews/id                 (retorna todas las reviews del cliente)
+✔️GET - http://localhost:3001/customer/                          (retorna todos los clientes)
+✔️GET - http://localhost:3001/customer/id                        (retorna datos del cliente)
+✔️POST- http://localhost:3001/customer/                     (crea un nuevo cliente)
+✔️DELETE - http://localhost:3001/clients/delete/id               (elimina a un cliente)
      
- POST   - http://localhost:3001/clients/create/review/          (crea una review de un producto)
- POST   - http://localhost:3001/clients/new                     (crea un nuevo cliente)
  PUT    - http://localhost:3001/clients/update                  (modifica los datos de un cliente)
- DELETE - http://localhost:3001/clients/delete/id               (elimina a un cliente)
 
-
+REVIEWS
+ POST   - http://localhost:3001/clients/create/review/          (crea una review de un producto)
+GET - http://localhost:3001/products/reviews/id                (retorna todas las reviews del producto)
+ GET - http://localhost:3001/clients/reviews/id                 (retorna todas las reviews del cliente)
 
 
 /ADMINISTRADOR

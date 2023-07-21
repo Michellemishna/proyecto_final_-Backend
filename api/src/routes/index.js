@@ -5,13 +5,15 @@ const router = Router();
 // Importar todos los routers
 const clientsRoute = require('../handlers/clientsRoute');
 const adminRoute = require('../handlers/adminRoute')
-const categoriesRouter = require("./categoriesRoute");
-const productRouter = require("./productRoute");
+const productRoute = require("./productRoute");
+const categoriesRoute = require("./categoriesRoute");
+const customerRoute = require("./customerRoute");
 const filterSortsRoute = require('../handlers/filterSortsRoute.js')
 
 
-router.use('/products', productRouter);
-router.use("/categories", categoriesRouter);
+router.use('/products', productRoute);
+router.use("/categories", categoriesRoute);
+router.use('/customer', customerRoute);
 router.use('/clients', clientsRoute);
 router.use('/admin', adminRoute);
 router.use("/filter-sorts", filterSortsRoute)

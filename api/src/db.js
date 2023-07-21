@@ -2,7 +2,6 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const pg = require("pg");
 
 const { DB_DEPLOY } = process.env;
 
@@ -12,7 +11,6 @@ const sequelize =
       {
         logging: false,
         native: false,
-        dialectModule: pg,
       }
     )
 

@@ -1,5 +1,5 @@
 const axios = require("axios");
-const {findCategoryDB} = require('../controllers/findAllApi');
+const {findCategoryDB, findDb} = require('../controllers/findAllApi');
 const { Category } =require("../db");
 
 
@@ -26,4 +26,19 @@ const getCategories = async (req,res) => {
       }
     }
 
-    module.exports = {getCategories} ;
+    const categoryId= async (req, res) => {
+      try {
+        const { id } = req.params;
+        const allProducts = await findDb()
+        if (id) {
+          let found = await allProducts.filter((product) => product.category ? product.category === id : product.category.id === id)
+          res.status(200).send(found)
+        } else {
+          res.status(400).send('error')
+        }
+      } catch (error) {
+        console.log(error)
+      }};
+    
+
+    module.exports = {getCategories, categoryId} ;
