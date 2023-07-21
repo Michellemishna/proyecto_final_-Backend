@@ -10,7 +10,7 @@ router.use("/filter-sorts", filterSortsRoute)
 
 
 /PRODUCTOS:
-✔️GET   - http://localhost:3001/products/categories              (retorna todas las categorías)
+✔️GET   - http://localhost:3001/categories                       (retorna todas las categorías)
 ✔️GET   - http://localhost:3001/products                         (retorna todos los productos)
 ✔️GET   - http://localhost:3001/products?name=nombre%20del%20producto       (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
 ✔️GET   - http://localhost:3001/products/id                      (retorna detalle del producto)
