@@ -7,7 +7,8 @@ const clearProductsApi =(arr) =>
             price:product.price,
             stock:product.available_quantity,
             category:product.category_id,
-            sold:product.sold_quantity
+            sold:product.sold_quantity,
+            descripion:"",
         }
     });
 

@@ -1,5 +1,5 @@
 const axios = require("axios");
-const findCategoryDB = require('../controllers/findCategoryDb');
+const {findCategoryDB} = require('../controllers/findAllApi');
 const { Category } =require("../db");
 
 
@@ -26,4 +26,4 @@ const getCategories = async (req,res) => {
       }
     }
 
-    module.exports = getCategories;
+    module.exports = {getCategories} ;
