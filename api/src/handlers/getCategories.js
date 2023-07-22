@@ -7,10 +7,10 @@ const getCategories = async (req,res) => {
     try {
         const dbCategories = await findCategoryDB();
         if (!dbCategories.length) {
-            const URL = `https://api.mercadolibre.com/categories/MLA1648`
-            const apiUrlCategories = (await axios.get(URL)).data;
+            const URL = `https://api.mercadolibre.com/sites/MLA/search?category=MLA430687`
+            const apiUrlCategories = (await axios(URL)).data;
             const availableFilter =
-            apiUrlCategories.children_categories.map((category) => {
+            apiUrlCategories.available_filters[0].values.map((category) => {
               return {
                 id: category.id,
                 name: category.name,
