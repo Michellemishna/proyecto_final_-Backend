@@ -31,9 +31,8 @@ module.exports = (sequelize) => {
       },
       description:{
         type:DataTypes.TEXT,
-        defaultValue: ""
       }
     },
     { timestamps: false }
-  );
+  ); 
 };
