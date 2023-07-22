@@ -71,7 +71,7 @@ POST  - http://localhost:3001/admin/create
 
 //FILTRAR Y ORDENAR PRODUCTOS
 GET -  http://localhost:3001/filter-sorts/selection?category=MLA1321622215&price_min=100&price_max=500&sort_by=price&order=asc 
-
+       http://localhost:3001/filter-sorts/selection?category=MLA1708&price_min=100&price_max=10000&sort_by=price&order=asc
 Rellenar los parámetros:
   category: Categoría de productos que deseas filtrar.
   price_min: Precio mínimo de los productos.
