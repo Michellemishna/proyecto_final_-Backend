@@ -9,15 +9,19 @@ router.use("/filter-sorts", filterSortsRoute)
 
 
 
+/CATEGORIAS:
+✔️GET   - http://localhost:3001/categories                       (retorna todas las categorías)
+✔️GET   - http://localhost:3001/categories/id                    (retorna categorías por id)
+
 /PRODUCTOS:
-✔️GET   - http://localhost:3001/products/categories              (retorna todas las categorías)
 ✔️GET   - http://localhost:3001/products                         (retorna todos los productos)
 ✔️GET   - http://localhost:3001/products?name=nombre%20del%20producto       (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
 ✔️GET   - http://localhost:3001/products/id                      (retorna detalle del producto)
 ✔️POST  - http://localhost:3001/products/                        (crea un producto)
 ✔️DELETE - http://localhost:3001/products/                       (eliminar un producto)
+✔️GET   - http://localhost:3001/products/pictures/id             (retorna fotos)
+✔️GET   - http://localhost:3001/products/description/id          (retorna description)
 
- 
 
 /FILTRADO Y ORDENAMIENTO:
 ✔️GET -  http://localhost:3001/filter-sorts/selection?category=electronics&price_min=100&price_max=500&sort_by=price&order=asc      (Filtra por categoría, por precio mayor a X y menor a X. Ordena por mayor y menor precio. )
@@ -32,9 +36,9 @@ router.use("/filter-sorts", filterSortsRoute)
  PUT    - http://localhost:3001/clients/update                  (modifica los datos de un cliente)
 
 REVIEWS
- POST   - http://localhost:3001/clients/create/review/          (crea una review de un producto)
+POST   - http://localhost:3001/clients/create/review/          (crea una review de un producto)
 GET - http://localhost:3001/products/reviews/id                (retorna todas las reviews del producto)
- GET - http://localhost:3001/clients/reviews/id                 (retorna todas las reviews del cliente)
+GET - http://localhost:3001/clients/reviews/id                 (retorna todas las reviews del cliente)
 
 
 /ADMINISTRADOR

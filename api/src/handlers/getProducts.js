@@ -1,4 +1,4 @@
-const {findDb, findAllApi} = require("../controllers/findAllApi")
+const {findAllApi} = require("../controllers/findAllApi")
 const axios = require("axios");
 const { Product, Category } = require("../db");
 const { Op } = require("sequelize");
@@ -40,7 +40,8 @@ const getPicture = async (req, res) => {
   const UrlPicture ="https://api.mercadolibre.com/items/"
   try {
     const pictures = await axios.get( `${UrlPicture}${id}`);
-    pictures.length ? res.send(pictures.data.pictures.map(r => r.url)) : null;
+    const picturesHd= pictures.data.pictures.map(r => r.url)
+    res.send(picturesHd);
   } catch (error) {
     console.log(error)
   }
