@@ -28,8 +28,11 @@ module.exports = (sequelize) => {
       sold:{
         type:DataTypes.INTEGER,
         defaultValue: 0
+      },
+      description:{
+        type:DataTypes.TEXT,
       }
     },
     { timestamps: false }
-  );
+  ); 
 };

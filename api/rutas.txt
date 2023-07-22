@@ -1,0 +1,89 @@
+/____________________________________________ RUTAS _____________________________________________/
+
+
+/ROUTERS CONFIGURATION
+router.use("/products", productsRoute);
+router.use("/clients", clientsRoute);
+router.use("/admin", adminRoute);
+router.use("/filter-sorts", filterSortsRoute)
+
+
+
+/CATEGORIAS:
+✔️GET   - http://localhost:3001/categories                       (retorna todas las categorías)
+✔️GET   - http://localhost:3001/categories/id                    (retorna categorías por id)
+
+/PRODUCTOS:
+✔️GET   - http://localhost:3001/products                         (retorna todos los productos)
+✔️GET   - http://localhost:3001/products?name=nombre%20del%20producto       (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
+✔️GET   - http://localhost:3001/products/id                      (retorna detalle del producto)
+✔️POST  - http://localhost:3001/products/                        (crea un producto)
+✔️DELETE - http://localhost:3001/products/                       (eliminar un producto)
+✔️GET   - http://localhost:3001/products/pictures/id             (retorna fotos)
+✔️GET   - http://localhost:3001/products/description/id          (retorna description)
+
+
+/FILTRADO Y ORDENAMIENTO:
+✔️GET -  http://localhost:3001/filter-sorts/selection?category=electronics&price_min=100&price_max=500&sort_by=price&order=asc      (Filtra por categoría, por precio mayor a X y menor a X. Ordena por mayor y menor precio. )
+
+
+/CLIENTES:
+✔️GET - http://localhost:3001/customer/                          (retorna todos los clientes)
+✔️GET - http://localhost:3001/customer/id                        (retorna datos del cliente)
+✔️POST- http://localhost:3001/customer/                     (crea un nuevo cliente)
+✔️DELETE - http://localhost:3001/clients/delete/id               (elimina a un cliente)
+     
+ PUT    - http://localhost:3001/clients/update                  (modifica los datos de un cliente)
+
+REVIEWS
+POST   - http://localhost:3001/clients/create/review/          (crea una review de un producto)
+GET - http://localhost:3001/products/reviews/id                (retorna todas las reviews del producto)
+GET - http://localhost:3001/clients/reviews/id                 (retorna todas las reviews del cliente)
+
+
+/ADMINISTRADOR
+ GET - http://localhost:3001/admin/sales                        (retorna todas las ventas hechas)
+ GET - http://localhost:3001/admin/orders                       (retorna todas las ventas pendientes)
+ GET - http://localhost:3001/admin/clients                      (retorna todos los clientes)
+
+✔️POST   - http://localhost:3001/admin/create                   (crea un usuario admin) 
+ ⏳PUT    - http://localhost:3001/admin/update/product            (modifica un producto)
+ ⏳DELETE - http://localhost:3001/admin/delete/product            (borra un producto)
+
+
+
+
+
+ ____________________________________________________________________________________________
+/__________________________________  GUÍA PARA EL FRONT  ___________________________________/
+
+
+
+//CREAR ADMIN
+POST  - http://localhost:3001/admin/create
+      {
+        "name": "Master Admin",
+        "user": "Master_Admin",
+        "password": "12345",
+        "image": "https://cdn-icons-png.flaticon.com/256/4712/4712038.png",
+        "email": "proyecto-final@gmail.com",
+        "phone": "0303456"
+      }
+
+
+
+
+//FILTRAR Y ORDENAR PRODUCTOS
+GET -  http://localhost:3001/filter-sorts/selection?category=MLA1321622215&price_min=100&price_max=500&sort_by=price&order=asc 
+
+Rellenar los parámetros:
+  category: Categoría de productos que deseas filtrar.
+  price_min: Precio mínimo de los productos.
+  price_max: Precio máximo de los productos.
+  sort_by: Criterio de ordenación (disponible solo "price" por ahora).
+  order: Orden de clasificación ("asc" para ascendente o "desc" para descendente).   
+
+Los parámetros sin rellenar, no se aplicarán:   
+  http://localhost:3001/filter-sorts/selection?category=&price_min=&price_max=&sort_by=price&order=asc
+  (acá solo aplica el ordenamiento)
+
