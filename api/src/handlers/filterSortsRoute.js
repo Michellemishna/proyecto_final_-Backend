@@ -1,13 +1,13 @@
 const { Router } = require("express");
 const router = Router();
-const { filtOrdenProd } = require('../controllers/filtersSortsControllers')
+const { filtOrderProd } = require('../controllers/filtersSortsControllers')
 
 
 // GET:
 router.get("/selection", async (req, res) => {
     try {    
         const { category, price_min, price_max, sort_by, order } = req.query;
-        const products = await filtOrdenProd({
+        const products = await filtOrderProd({
             category: category, 
             price_min: price_min, 
             price_max: price_max, 
