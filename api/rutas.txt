@@ -19,6 +19,8 @@ router.use("/filter-sorts", filterSortsRoute)
 ✔️GET   - http://localhost:3001/products/id                      (retorna detalle del producto)
 ✔️POST  - http://localhost:3001/products/                        (crea un producto)
 ✔️DELETE - http://localhost:3001/products/                       (eliminar un producto)
+✔️GET   - http://localhost:3001/products/pictures/id             (retorna fotos)
+✔️GET   - http://localhost:3001/products/description/id          (retorna description)
 
 
 /FILTRADO Y ORDENAMIENTO:
