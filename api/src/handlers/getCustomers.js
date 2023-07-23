@@ -2,7 +2,6 @@ const { Product, Customer, Order } = require("../db");
 
 const getCustomers = async (req, res) => {
   const { name } = req.query;
-  console.log("aca le llega el name:", name);
   try {
     let result = await Customer.findAll();
     if (name)
@@ -29,14 +28,14 @@ const getCustomerId = async (req, res) => {
 };
 
 const createCustomer = async (req, res) => {
-  const { name, user, password, image, email, phone, address, admin } =
+  const { name, user, password, image, email, phone, address } =
     req.body;
   try {
     //validaciones
     if (!name || !user || !password || !email)
       return res
         .status(404)
-        .send("These fields cannot be empty: [name,user,password,email]");
+        .send("No dejes ningun campo vacio");
 
     if (await Customer.findByPk(user))
       return res.status(304).send("Cliente registrado");
