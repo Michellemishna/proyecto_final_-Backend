@@ -10,16 +10,17 @@ const filtOrderProd = async (obj) =>{
       let products = []
       
     if(search){
+      console.log(search)
       products2 = await Product.findAll({ where: { 
         title: { [Op.iLike]: `%${search}%` } }, include: { all: true } 
       })
       products = products2
-    }else{  products2 = await Product.findAll();}
+    }else{  products = await Product.findAll();}
     
     console.log(products2);
 
     if (category.length > 0) {
-      products = products2.filter(
+      products = products.filter(
         (product) => product.dataValues.category === category
         );        
       }
