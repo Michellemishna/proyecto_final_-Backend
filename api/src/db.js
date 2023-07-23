@@ -5,14 +5,29 @@ const path = require("path");
 
 const { DB_DEPLOY } = process.env;
 
-const sequelize = 
+/* const sequelize = 
   new Sequelize(
     DB_DEPLOY,
       {
         logging: false,
         native: false,
       }
-    )
+    ) */
+
+const sequelize = new Sequelize(
+  `postgresql://gastonnietoarte:5VTgFIPG1lUh@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/neondb`,
+  {
+    logging: false,
+    native: false,
+    dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+  }
+);
 
 const basename = path.basename(__filename);
 
@@ -36,7 +51,8 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Category, Customer, Order, Product, Admin, Review, Wishlist } =  sequelize.models;
+const { Category, Customer, Order, Product, Admin, Review, Wishlist } =
+  sequelize.models;
 
 Category.belongsToMany(Product, { through: "category_product" });
 Product.belongsToMany(Category, { through: "category_product" });
