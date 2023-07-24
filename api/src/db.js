@@ -15,7 +15,7 @@ const { DB_DEPLOY } = process.env;
     ) */
 
 const sequelize = new Sequelize(
-  `postgresql://gastonnietoarte:5VTgFIPG1lUh@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/neondb`,
+  `postgres://gastonnietoarte:5VTgFIPG1lUh@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/PRUEBA`,
   {
     logging: false,
     native: false,

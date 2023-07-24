@@ -1,29 +1,41 @@
-const {findAllApi} = require("../controllers/findAllApi")
+const { findAllApi } = require("../controllers/findAllApi");
 const axios = require("axios");
 const { Product, Category } = require("../db");
 const { Op } = require("sequelize");
 
-let cargo =false;
-const getAllProducts =async (req, res) => {
-    const { name } = req.query;
-    try {
-        let result = cargo ? await Product.findAll({ include: { all: true } }) : await findAllApi()
-        cargo = true;
-    
-        if (name) {
-          let filtrado = await Product.findAll({ where: { title: { [Op.iLike]: `%${name}%` } }, include: { all: true } })
-          filtrado.length ? res.send(filtrado) : res.status(404).send("Product not found")
-        } else res.json(result);
-      } catch (error) {
-        res.status(404).send({ error: error.message });
-      }
-    };
+let cargo = false;
+const getAllProducts = async (req, res) => {
+  const { name } = req.query;
+  try {
+    let result = cargo
+      ? await Product.findAll({ include: { all: true } })
+      : await findAllApi();
+    cargo = true;
+
+    if (name) {
+      let filtrado = await Product.findAll({
+        where: { title: { [Op.iLike]: `%${name}%` } },
+        include: { all: true },
+      });
+      filtrado.length
+        ? res.send(filtrado)
+        : res.status(404).send("Product not found");
+    } else {
+      console.log(result);
+      res.json(result);
+    }
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+};
 
 const getProductId = async (req, res) => {
   try {
     const { id } = req.params;
     if (id) {
-      const searchProduct = await Product.findByPk(id, { include: { all: true } });
+      const searchProduct = await Product.findByPk(id, {
+        include: { all: true },
+      });
       if (searchProduct) {
         res.status(200).send(searchProduct);
       } else {
@@ -33,31 +45,31 @@ const getProductId = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 const getPicture = async (req, res) => {
   const { id } = req.params;
-  const UrlPicture ="https://api.mercadolibre.com/items/"
+  const UrlPicture = "https://api.mercadolibre.com/items/";
   try {
-    const pictures = await axios.get( `${UrlPicture}${id}`);
-    const picturesHd= pictures.data.pictures.map(r => r.url)
+    const pictures = await axios.get(`${UrlPicture}${id}`);
+    const picturesHd = pictures.data.pictures.map((r) => r.url);
     res.send(picturesHd);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 const getDescription = async (req, res) => {
   const { id } = req.params;
-  const UrlDescription ="https://api.mercadolibre.com/items/"
+  const UrlDescription = "https://api.mercadolibre.com/items/";
   try {
-    const description = (await axios.get(`${UrlDescription}${id}/description`)).data.plain_text;
+    const description = (await axios.get(`${UrlDescription}${id}/description`))
+      .data.plain_text;
     res.send(description);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
-
+};
 
 const postNewProduct = async (req, res) => {
   try {
@@ -73,7 +85,7 @@ const postNewProduct = async (req, res) => {
         price,
         stock,
         category,
-        sold
+        sold,
       });
       const foundCategory = await Category.findOne({
         where: {
@@ -81,7 +93,7 @@ const postNewProduct = async (req, res) => {
         },
       });
       await create.addCategory(foundCategory);
-      
+
       res.status(200).send("Nuevo producto creado correctamente!");
     }
   } catch (error) {
@@ -98,7 +110,13 @@ const deleteProduct = async (req, res) => {
   } catch (error) {
     res.json({ error: error.message });
   }
-}
+};
 
-
- module.exports = {getAllProducts, getProductId, getPicture, getDescription, postNewProduct, deleteProduct};
+module.exports = {
+  getAllProducts,
+  getProductId,
+  getPicture,
+  getDescription,
+  postNewProduct,
+  deleteProduct,
+};
