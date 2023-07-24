@@ -6,7 +6,7 @@ const findDb = async () => {
   return foundData;
 };
 
-const findAllApi = async () => {
+/* const findAllApi = async () => {
   const existingData = await findDb(); // Verifica si hay datos cargados en la base de datos
 
   if (existingData.length === 0) {
@@ -46,11 +46,11 @@ const findAllApi = async () => {
 
   let dataDb = await Product.findAll({ include: { all: true } });
   return dataDb;
-};
+}; */
 
 const findCategoryDB = async () => {
   const searchCategory = await Category.findAll({ include: { all: true } });
   return searchCategory;
 };
 
-module.exports = { findDb, findAllApi, findCategoryDB };
+module.exports = { findDb, findCategoryDB };

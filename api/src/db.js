@@ -14,7 +14,7 @@ const { DB_DEPLOY } = process.env;
       }
     ) */
 
-     const sequelize = new Sequelize(`postgres://gastonnietoarte:5VTgFIPG1lUh@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/ESTABLE`, {
+     const sequelize = new Sequelize(`postgres://gastonnietoarte:U2IoviJ4eFRz@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/ESTABLE`, {
       logging: false,
       native: false,
       dialect: 'postgres',
