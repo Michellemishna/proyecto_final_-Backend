@@ -21,6 +21,8 @@ const { DB_DEPLOY, DB_USER,DB_PASSWORD,DB_HOST } = process.env;
 //        }
 //     );
 const sequelize = new Sequelize(`postgres://gastonnietoarte:U2IoviJ4eFRz@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/ESTABLE`, {
+
+     //const sequelize = new Sequelize(`postgres://gastonnietoarte:U2IoviJ4eFRz@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/ESTABLE`, {
       logging: false,
       native: false,
       dialect: 'postgres',
