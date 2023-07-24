@@ -1,18 +1,30 @@
-const { Product } = require("../db");
+const { Product, Category,  } = require("../db");
+const { Sequelize, DataTypes, Op } = require('sequelize');
 
 
-const filtOrdenProd = async (obj) =>{
+const filtOrderProd = async (obj) =>{
     try {
-        //console.log(obj);
-        const { category, price_min, price_max, sort_by, order } = obj;
-        let products = await Product.findAll();
-        console.log(products);
+      const {search, category, price_min, price_max, sort_by, order } = obj;
+      
+      let products2 = []
+      let products = []
+      
+    if(search){
+      console.log(search)
+      products2 = await Product.findAll({ where: { 
+        title: { [Op.iLike]: `%${search}%` } }, include: { all: true } 
+      })
+      products = products2
+    }else{  products = await Product.findAll();}
+    
+    console.log(products2);
 
-        if (category) {
-            products = products.filter(
-              (product) => product.category === category
-            );
-          }
+    if (category.length > 0) {
+      products = products.filter(
+        (product) => product.dataValues.category === category
+        );        
+      }
+
       
           // Filtrar por precio mínimo
           if (price_min) {
@@ -41,9 +53,6 @@ const filtOrdenProd = async (obj) =>{
             });
           }
       
-/*           products.length === 0
-          ? 'No hay resultados para los filtros aplicados'
-          : products; */
           if(products.length === 0) return 'No hay resultados para los filtros aplicados';
           return products;
     } catch (error) {
@@ -55,5 +64,8 @@ const filtOrdenProd = async (obj) =>{
 
 
 module.exports = {
-    filtOrdenProd,
+  filtOrderProd,
   };
+
+
+  

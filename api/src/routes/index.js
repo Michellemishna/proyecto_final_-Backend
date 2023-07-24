@@ -9,6 +9,7 @@ const productRoute = require("./productRoute");
 const categoriesRoute = require("./categoriesRoute");
 const customerRoute = require("./customerRoute");
 const filterSortsRoute = require('../handlers/filterSortsRoute.js')
+const reviewsRoute = require("./reviewsRoute");
 
 
 router.use('/products', productRoute);
@@ -17,6 +18,8 @@ router.use('/customer', customerRoute);
 router.use('/clients', clientsRoute);
 router.use('/admin', adminRoute);
 router.use("/filter-sorts", filterSortsRoute)
+router.use('/review', reviewsRoute);
+
 
 router.use('*', function(req, res) {
     res.status(404).send('Page not found');
