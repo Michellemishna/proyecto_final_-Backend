@@ -4,15 +4,23 @@ const { Sequelize, DataTypes, Op } = require('sequelize');
 
 const filtOrderProd = async (obj) =>{
     try {
-      const { category, price_min, price_max, sort_by, order } = obj;
+      const {search, category, price_min, price_max, sort_by, order } = obj;
+      
+      let products2 = []
+      let products = []
+      
+    if(search){
+      console.log(search)
+      products2 = await Product.findAll({ where: { 
+        title: { [Op.iLike]: `%${search}%` } }, include: { all: true } 
+      })
+      products = products2
+    }else{  products = await Product.findAll();}
+    
+    console.log(products2);
 
-
-    // Realiza la consulta de los productos según las opciones definidas
-    let products2 = await Product.findAll();
-
-    let products = []
     if (category.length > 0) {
-      products = products2.filter(
+      products = products.filter(
         (product) => product.dataValues.category === category
         );        
       }
