@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const { Product, Category } = require("../db");
 const { Sequelize, DataTypes, Op } = require("sequelize");
 
@@ -9,8 +10,31 @@ const filtOrderProd = async (obj) => {
     let products2 = await Product.findAll();
 
     let products = [];
+=======
+const { Product, Category,  } = require("../db");
+const { Sequelize, DataTypes, Op } = require('sequelize');
+
+
+const filtOrderProd = async (obj) =>{
+    try {
+      const {search, category, price_min, price_max, sort_by, order } = obj;
+      
+      let products2 = []
+      let products = []
+      
+    if(search){
+      console.log(search)
+      products2 = await Product.findAll({ where: { 
+        title: { [Op.iLike]: `%${search}%` } }, include: { all: true } 
+      })
+      products = products2
+    }else{  products = await Product.findAll();}
+    
+    console.log(products2);
+
+>>>>>>> 4a18349f6f0b050abc7040c06f9fd267dd3428ae
     if (category.length > 0) {
-      products = products2.filter(
+      products = products.filter(
         (product) => product.dataValues.category === category
       );
     }
