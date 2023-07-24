@@ -14,6 +14,7 @@ const { DB_DEPLOY } = process.env;
       }
     ) */
 
+<<<<<<< HEAD
 const sequelize = new Sequelize(
   `postgres://gastonnietoarte:5VTgFIPG1lUh@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/ESTABLE`,
   {
@@ -28,6 +29,19 @@ const sequelize = new Sequelize(
     },
   }
 );
+=======
+     const sequelize = new Sequelize(`postgres://gastonnietoarte:U2IoviJ4eFRz@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/ESTABLE`, {
+      logging: false,
+      native: false,
+      dialect: 'postgres',
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
+      }
+    }); 
+>>>>>>> 3ce0b42b56fb709cc95e01f25f05b45dd13b42f1
 
 const basename = path.basename(__filename);
 

@@ -3,7 +3,7 @@ const axios = require("axios");
 const { Product, Category } = require("../db");
 const { Op } = require("sequelize");
 
-let cargo = false;
+let cargo = true;
 const getAllProducts = async (req, res) => {
   const { name } = req.query;
   try {
@@ -20,10 +20,7 @@ const getAllProducts = async (req, res) => {
       filtrado.length
         ? res.send(filtrado)
         : res.status(404).send("Product not found");
-    } else {
-      console.log(result);
-      res.json(result);
-    }
+    } else res.json(result);
   } catch (error) {
     res.status(404).send({ error: error.message });
   }
