@@ -11,11 +11,11 @@ const findAllApi = async () => {
 
   if (existingData.length === 0) {
     // No hay datos en la base de datos, cargar desde la API
-    const URL = "https://api.mercadolibre.com/sites/MLA/search?category=";
-    const ids = [
-      // ... lista de IDs de marcas
-      "MLA1648&BRAND=49944", //HP
-    ].map((marca) => URL + marca);
+    // const URL = "https://api.mercadolibre.com/sites/MLA/search?category=";
+    // const ids = [
+    //   // ... lista de IDs de marcas
+    //   "MLA1648&BRAND=49944", //HP
+    // ].map((marca) => URL + marca);
 
     const apiUrl = await Promise.all(
       ids.map(async (ruta) => {

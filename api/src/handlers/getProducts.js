@@ -3,7 +3,7 @@ const axios = require("axios");
 const { Product, Category } = require("../db");
 const { Op } = require("sequelize");
 
-let cargo =false;
+let cargo =true;
 const getAllProducts =async (req, res) => {
     const { name } = req.query;
     try {
