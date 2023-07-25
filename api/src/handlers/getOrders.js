@@ -28,7 +28,7 @@ const getOrderById = async (req, res) => {
 
 // crear orden de compra
 const createOrder = async (req, res) => {
-  const { CustomerUser, shopping, email, order_status,
+  const { customerUser, shopping, email, order_status,
     default_shipping_address  } = req.body;
   
 // monto total a pagar 
@@ -44,7 +44,7 @@ const createOrder = async (req, res) => {
       order_status: order_status, 
       shopping: shopping, 
     }
-    const searchCustomer = await Customer.findByPk(CustomerUser)
+    const searchCustomer = await Customer.findByPk(customerUser)
      searchCustomer.addOrder(newOrder)
 
     res.send(newOrder)

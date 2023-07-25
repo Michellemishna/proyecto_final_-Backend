@@ -30,6 +30,7 @@ const getCustomerId = async (req, res) => {
 const createCustomer = async (req, res) => {
   const { name, user, password, image, email, phone, address } =
     req.body;
+    let isBaned = false;
   try {
     //validaciones
     if (!name || !user || !password || !email)
@@ -40,12 +41,13 @@ const createCustomer = async (req, res) => {
     if (await Customer.findByPk(user))
       return res.status(304).send("Cliente registrado");
     const newCustomer = await Customer.create({
-      user,
       name,
+      user,
       password,
       image,
       email,
       phone,
+      user_banned: false,
       default_shipping_address: address,
       is_Active: true,
     });
@@ -90,5 +92,7 @@ const deleteCustomer = async (req, res) => {
       res.json({ error: error.message });
     }
   };
+
+
 
 module.exports = { getCustomers, getCustomerId, createCustomer, modifyCustomer, deleteCustomer };
