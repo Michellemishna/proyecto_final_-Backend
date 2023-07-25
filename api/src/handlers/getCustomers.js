@@ -1,4 +1,4 @@
-const { Product, Customer, Order } = require("../db");
+const { Customer, Order } = require("../db");
 
 const getCustomers = async (req, res) => {
   const { name } = req.query;
@@ -49,11 +49,37 @@ const createCustomer = async (req, res) => {
       default_shipping_address: address,
       is_Active: true,
     });
-    res.send("Cliente Creado Exitosamente!");
+    res.send("Cliente Creado con Exito!");
   } catch (error) {
     res.send({ error: error.message });
   }};
 
+
+  const modifyCustomer = async (req, res) => {
+    const { id } = req.params;
+    const { name, user, image, email, phone, address, baneado } = req.body;
+    try {
+      // busca al customer
+      const customer = await Customer.findByPk(id);
+
+      if (!customer) res.status(404).send("ID not found");
+      //si existe actualizo dependiendo los datos
+      customer.name = name ? name : customer.name;
+      customer.user_banned = baneado;
+      customer.user = user ? user : customer.user;
+      customer.image = image ? image : customer.image;
+      customer.email = email ? email : customer.email;
+      customer.phone = phone ? phone : customer.phone;
+      customer.default_shipping_address = address ? address : customer.default_shipping_address;
+      await customer.save(); // guardamos los cambios
+      res.send("Update");
+
+    } catch (error) {
+      res.send({ error: error.message });
+    }
+  };
+  
+//eliminar customer
 const deleteCustomer = async (req, res) => {
     const { id } = req.params;
     try {
@@ -65,4 +91,4 @@ const deleteCustomer = async (req, res) => {
     }
   };
 
-module.exports = { getCustomers, getCustomerId, createCustomer, deleteCustomer };
+module.exports = { getCustomers, getCustomerId, createCustomer, modifyCustomer, deleteCustomer };

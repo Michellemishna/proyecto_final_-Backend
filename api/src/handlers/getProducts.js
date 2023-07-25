@@ -5,13 +5,13 @@ const { Op } = require("sequelize");
 
 let cargo =false;
 const getAllProducts =async (req, res) => {
-    const { name } = req.query;
+    const { title } = req.query;
     try {
         let result = cargo ? await Product.findAll({ include: { all: true } }) : await findAllApi()
         cargo = true;
     
-        if (name) {
-          let filtrado = await Product.findAll({ where: { title: { [Op.iLike]: `%${name}%` } }, include: { all: true } })
+        if (title) {
+          let filtrado = await Product.findAll({ where: { title: { [Op.iLike]: `%${title}%` } }, include: { all: true } })
           filtrado.length ? res.send(filtrado) : res.status(404).send("Product not found")
         } else res.json(result);
       } catch (error) {
@@ -66,7 +66,7 @@ const postNewProduct = async (req, res) => {
     if (!title || !image || !price || !stock || !category || !sold) {
       res.status(404).send("Solicitud incompleta");
     } else {
-      const create = await Product.create({
+      const createProduct = await Product.create({
         id: `MLA${Math.round(Math.random() * 1000000000)}`,
         title,
         image,
@@ -77,10 +77,10 @@ const postNewProduct = async (req, res) => {
       });
       const foundCategory = await Category.findOne({
         where: {
-          id: category,
+          name: category,
         },
       });
-      await create.addCategory(foundCategory);
+      await createProduct.addCategory(foundCategory);
       
       res.status(200).send("Nuevo producto creado correctamente!");
     }
@@ -91,14 +91,22 @@ const postNewProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
-  try {
-    const removed = await Product.destroy({ where: { id } });
-    if (removed) return res.send("Producto Eliminado");
-    res.send("ID no existe");
-  } catch (error) {
-    res.json({ error: error.message });
-  }
-}
+    try {
+       let productDelete = await Product.update(  {
+             visible: 1, },
+          {
+             where: { id: id },
+          }
+       );
+ 
+       res.send("producto no visible para clientes");
+    } catch (error) {
+       console.log(error);
+       res.status(400).send(error);
+    }
+ }
+ 
+  
 
 
  module.exports = {getAllProducts, getProductId, getPicture, getDescription, postNewProduct, deleteProduct};

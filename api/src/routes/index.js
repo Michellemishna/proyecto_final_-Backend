@@ -10,6 +10,7 @@ const categoriesRoute = require("./categoriesRoute");
 const customerRoute = require("./customerRoute");
 const filterSortsRoute = require('../handlers/filterSortsRoute.js')
 const reviewsRoute = require("./reviewsRoute");
+const orderRoute = require("./orderRoute");
 
 
 router.use('/products', productRoute);
@@ -19,6 +20,7 @@ router.use('/clients', clientsRoute);
 router.use('/admin', adminRoute);
 router.use("/filter-sorts", filterSortsRoute)
 router.use('/review', reviewsRoute);
+router.use("/order", orderRoute);
 
 
 router.use('*', function(req, res) {
