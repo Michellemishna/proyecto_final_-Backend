@@ -4,6 +4,17 @@ module.exports = (sequelize) => {
   sequelize.define(
     'Order',
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+        unique: true,
+        allowNull: false,
+      },
+      confirmed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+     },
       amount: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -21,8 +32,13 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       order_status: {
-        type: DataTypes.STRING,
+        defaultValue: "Pendiente de Pago",
+        type: DataTypes.ENUM("Pendiente de Pago","Comprado", "Despachado", "Entregado"),
       },
+      shopping: {
+        type: DataTypes.ARRAY(DataTypes.JSON),
+        allowNull: false,
+      }
     },
     { timestamps: false }
   );
