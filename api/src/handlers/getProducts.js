@@ -12,10 +12,10 @@ const getAllProducts =async (req, res) => {
     
         if (title) {
           let filtrado = await Product.findAll({ where: { title: { [Op.iLike]: `%${title}%` } }, include: { all: true } })
-          filtrado.length ? res.send(filtrado) : res.status(404).send("Product not found")
+          res.send(filtrado) 
         } else res.json(result);
       } catch (error) {
-        res.status(404).send({ error: error.message });
+        res.status(404).send("Product not found")
       }
     };
 
