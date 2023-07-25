@@ -3,21 +3,20 @@ const axios = require("axios");
 const { Product, Category } = require("../db");
 const { Op } = require("sequelize");
 
-let cargo =false;
 const getAllProducts =async (req, res) => {
-    const { title } = req.query;
-    try {
-        let result = cargo ? await Product.findAll({ include: { all: true } }) : await findAllApi()
-        cargo = true;
-    
-        if (title) {
-          let filtrado = await Product.findAll({ where: { title: { [Op.iLike]: `%${title}%` } }, include: { all: true } })
-          res.send(filtrado) 
-        } else res.json(result);
-      } catch (error) {
-        res.status(404).send("Product not found")
-      }
-    };
+  const { title } = req.query;
+
+  let products;
+  try {
+     title
+        ? (products = await findAllApi(title))
+        : (products = await findAllApi());
+     return res.send(products);
+  } catch (e) {
+     res.status(400).json({ Error: e.message });
+  }
+};
+   
 
 const getProductId = async (req, res) => {
   try {
@@ -63,7 +62,7 @@ const postNewProduct = async (req, res) => {
   try {
     const { title, image, price, stock, category, sold } = req.body;
     console.log(req.body);
-    if (!title || !image || !price || !stock || !category || !sold) {
+    if (!title || !image || !price || !stock || !sold) {
       res.status(404).send("Solicitud incompleta");
     } else {
       const createProduct = await Product.create({
@@ -72,7 +71,6 @@ const postNewProduct = async (req, res) => {
         image,
         price,
         stock,
-        category,
         sold
       });
       const foundCategory = await Category.findOne({
@@ -104,9 +102,48 @@ const deleteProduct = async (req, res) => {
        console.log(error);
        res.status(400).send(error);
     }
- }
+ };
+
+ const modifyProduct = async (req, res) => {
+  const { id } = req.params;
+  const { title, image, price, category, stock, description, } = req.body;
+  try {
+    // busco el producto
+    const product = await Product.findByPk(id);
+    //sino esta
+    if (!product) res.status(404).send("ID not found");
+    //si esta actualizo dependiendo los datos que me ingresan
+    product.title = title ? title : product.title;
+    product.image = image ? image : product.image;
+    product.price = price ? price : product.price;
+    product.category = category ? category : product.category;
+    product.stock = stock ? stock : product.stock;
+    product.description = description ? description : product.description;
+
+    await product.save(); // guardamos los cambios
+    res.send("Producto Actualizado");
+    //console.log(JSON.stringify(product))
+  } catch (error) {
+    res.send({ error: error.message });
+  }
+};
+
+ // ruta para actualizar el carrito dw compras
+ const addShoppingcart = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findByPk(id)
+    if (product) {
+      const { sold, stock } = req.body
+      if (stock > product.stock) return res.status(404).send("Lo sentimos la cantidad de productos que intentas comprar excede nuestro stock")
+      product.stock = product.stock - stock
+      product.sold = product.sold + sold
+      await product.save()
+      return res.send("La compra se realizó correctamente.")
+    }
+  } catch (error) {
+    res.send({ error: error.message })
+  }};
+
  
-  
-
-
- module.exports = {getAllProducts, getProductId, getPicture, getDescription, postNewProduct, deleteProduct};
+  module.exports = {getAllProducts, getProductId, getPicture, getDescription, postNewProduct, deleteProduct, modifyProduct, addShoppingcart};

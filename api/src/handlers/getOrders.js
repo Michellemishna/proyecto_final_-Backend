@@ -28,28 +28,24 @@ const getOrderById = async (req, res) => {
 
 // crear orden de compra
 const createOrder = async (req, res) => {
-  const { user_id, email, items } = req.body;
+  const { CustomerUser, shopping, email, order_status,
+    default_shipping_address  } = req.body;
   
 // monto total a pagar 
   const precio = items.map(e => parseFloat(e.unit_price) * parseFloat(e.quantity)).reduce((a, b) => a + b)
- 
   try {
     const date = new Date()
-    const found = await Customer.findByPk(user_id)
-    const orden = {
+    const newOrder = {
       amount: precio, // monto 
-      shipping_address: "", // direccion de envio
+      shipping_address:  default_shipping_address, // direccion de envio
       order_address: "", // direccion de pedido
       order_email: email,
       order_date: date,
-      order_status: "pendiente"
+      order_status: order_status, 
+      shopping: shopping, 
     }
-    const newOrder = await Order.create(orden)
-    newOrder.addCustomer(found)
-    items.map(async (item) => (
-      await newOrder.addProduct(item.id)
-    ))
-    newOrder.addProduct()
+    const searchCustomer = await Customer.findByPk(CustomerUser)
+     searchCustomer.addOrder(newOrder)
 
     res.send(newOrder)
   } catch (error) {
