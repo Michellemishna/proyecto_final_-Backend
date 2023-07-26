@@ -15,12 +15,14 @@ router.use("/filter-sorts", filterSortsRoute)
 
 /PRODUCTOS:
 ✔️GET   - http://localhost:3001/products                         (retorna todos los productos)
-✔️GET   - http://localhost:3001/products?name=nombre%20del%20producto       (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
 ✔️GET   - http://localhost:3001/products/id                      (retorna detalle del producto)
-✔️POST  - http://localhost:3001/products/                        (crea un producto)
-✔️DELETE - http://localhost:3001/products/                       (eliminar un producto)
+✔️GET   - http://localhost:3001/products?title=nombre%20del%20producto       (retorna detalle del producto) - [Nota: en los espacios entre palabras se debe agregar: %20]
 ✔️GET   - http://localhost:3001/products/pictures/id             (retorna fotos)
 ✔️GET   - http://localhost:3001/products/description/id          (retorna description)
+✔️POST  - http://localhost:3001/products/                        (crea un producto)
+✔️DELETE - http://localhost:3001/products/                       (eliminar un producto)
+✔️PUT   - http://localhost:3001/products/id                       (modificar un producto)
+✔️PUT   - http://localhost:3001/products/shoppingcart/id          (agregar productos al carrito)
 
 
 /FILTRADO Y ORDENAMIENTO:
@@ -30,15 +32,27 @@ router.use("/filter-sorts", filterSortsRoute)
 /CLIENTES:
 ✔️GET - http://localhost:3001/customer/                          (retorna todos los clientes)
 ✔️GET - http://localhost:3001/customer/id                        (retorna datos del cliente)
-✔️POST- http://localhost:3001/customer/                     (crea un nuevo cliente)
-✔️DELETE - http://localhost:3001/clients/delete/id               (elimina a un cliente)
+✔️POST- http://localhost:3001/customer/                         (crea un nuevo cliente)
+✔️PUT- http://localhost:3001/customer/id                         (modificar cliente)
+✔️DELETE - http://localhost:3001/customer/id               (elimina a un cliente)
      
- PUT    - http://localhost:3001/clients/update                  (modifica los datos de un cliente)
+/ORDEN:
+⏳GET - http://localhost:3001/order/                          (retorna todas las ordenes)
+⏳GET - http://localhost:3001/order/id                        (retorna orden por Id )
+⏳POST- http://localhost:3001/order/                         (crea una nueva orden)
+⏳PUT- http://localhost:3001/order/id                         (modificar orden)
+⏳DELETE - http://localhost:3001/order/id               (elimina una orden)
+     
 
-REVIEWS
-POST   - http://localhost:3001/clients/create/review/          (crea una review de un producto)
-GET - http://localhost:3001/products/reviews/id                (retorna todas las reviews del producto)
+REVIEWS:
+⏳POST   - http://localhost:3001/review                     (crea una review de un producto)
+⏳GET - http://localhost:3001/reviews/id                    (retorna todas las reviews del producto)
+
+
 GET - http://localhost:3001/clients/reviews/id                 (retorna todas las reviews del cliente)
+
+
+PAYMENTS
 
 
 /ADMINISTRADOR

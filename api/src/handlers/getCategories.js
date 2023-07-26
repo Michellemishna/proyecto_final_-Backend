@@ -1,4 +1,3 @@
-const axios = require("axios");
 const { findCategoryDB, findDb } = require("../controllers/findAllApi");
 const { Category } = require("../db");
 
