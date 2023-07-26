@@ -3,7 +3,9 @@ const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 
+
 const { DB_DEPLOY, DB_USER,DB_PASSWORD,DB_HOST } = process.env;
+
 
  const sequelize = 
   new Sequelize(
@@ -11,8 +13,14 @@ const { DB_DEPLOY, DB_USER,DB_PASSWORD,DB_HOST } = process.env;
       {
         logging: false,
         native: false,
+        dialect: 'postgres',
+           dialectOptions: {
+             ssl: {
+               require: true,
+               rejectUnauthorized: false
+             }
       }
-    ) 
+    }) 
 // const sequelize = new Sequelize(
 //    `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/proyectofinal`,
 //    {
