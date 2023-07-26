@@ -32,8 +32,8 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
       },
       order_status: {
-        defaultValue: "Pendiente de Pago",
-        type: DataTypes.ENUM("Pendiente de Pago","Comprado", "Despachado", "Entregado"),
+        defaultValue: "pendiente",
+        type: DataTypes.ENUM("realizada","cancelada", "pendiente"),
       },
       shopping: {
         type: DataTypes.ARRAY(DataTypes.JSON),
