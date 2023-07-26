@@ -74,7 +74,7 @@ const productos = [
   {
     id: "MLA1116993757",
     title:
-      "Notebook Hp 15-dy2061la Plateada Natural 15.6 Intel Core I3 1125g4  8gb De Ram 256gb Ssd Intel Uhd Graphics Xe G4 48eus 1366x768px Windows 10 Home",
+      "Notebook Hp 15-dy2061la Plateada Natural 15.6 Intel Core I3 1125g4  8gb De Ram 256gb Ssd Intel",
     image: "http://http2.mlstatic.com/D_644602-MLA48643624987_122021-O.jpg",
     price: 385999,
     category: "MLA1652",
@@ -270,7 +270,7 @@ const productos = [
   {
     id: "MLA1361660897",
     title:
-      "Notebook Hp 15-ef2514la Plata 15.6 Amd Ryzen 7 5700u  8gb De Ram 512gb Ssd Amd Radeon Rx Vega 8 (ryzen 4000/5000) 1366x768px Windows 11 Home",
+      "Notebook Hp 15-ef2514la Plata 15.6 Amd Ryzen 7 5700u  8gb De Ram 512gb Ssd Amd Radeon Rx Vega 8",
     image: "http://http2.mlstatic.com/D_982323-MLA51606812711_092022-O.jpg",
     price: 524999,
     category: "MLA1652",
@@ -444,7 +444,7 @@ const productos = [
   {
     id: "MLA1420557236",
     title:
-      "Notebook Hp Pavilion 13-bb0003la Plata Natural 13.3  Intel Core I5 1135g7  8gb De Ram 256gb Ssd 16gb Optane Intel Iris Xe Graphics G7 80eus 1920x1080px Windows 10 Home",
+      "Notebook Hp Pavilion 13-bb0003la Plata Natural 13.3  Intel Core I5 1135g7  8gb De Ram 256gb Ssd 16gb Optane Intel",
     image: "http://http2.mlstatic.com/D_759223-MLA48455080889_122021-O.jpg",
     price: 654999,
     category: "MLA1652",
@@ -508,7 +508,7 @@ const productos = [
   {
     id: "MLA1452741120",
     title:
-      "Notebook Hp 240 G7 Plateado Ceniza Oscuro 14  Intel Core I3 1005g1  8gb De Ram 1tb Hdd Intel Uhd Graphics G1 (ice Lake 32 Eu) 1366x768px Windows 10 Home",
+      "Notebook Hp 240 G7 Plateado Ceniza Oscuro 14  Intel Core I3 1005g1  8gb De Ram 1tb Hdd Intel ",
     image: "http://http2.mlstatic.com/D_694019-MLA46479872032_062021-O.jpg",
     price: 349999,
     category: "MLA1652",
