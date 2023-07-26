@@ -3,21 +3,20 @@ const axios = require("axios");
 const { Product, Category } = require("../db");
 const { Op } = require("sequelize");
 
-let cargo =false;
 const getAllProducts =async (req, res) => {
-    const { name } = req.query;
-    try {
-        let result = cargo ? await Product.findAll({ include: { all: true } }) : await findAllApi()
-        cargo = true;
-    
-        if (name) {
-          let filtrado = await Product.findAll({ where: { title: { [Op.iLike]: `%${name}%` } }, include: { all: true } })
-          filtrado.length ? res.send(filtrado) : res.status(404).send("Product not found")
-        } else res.json(result);
-      } catch (error) {
-        res.status(404).send({ error: error.message });
-      }
-    };
+  const { title } = req.query;
+
+  let products;
+  try {
+     title
+        ? (products = await findAllApi(title))
+        : (products = await findAllApi());
+     return res.send(products);
+  } catch (e) {
+     res.status(400).json({ Error: e.message });
+  }
+};
+   
 
 const getProductId = async (req, res) => {
   try {
@@ -63,24 +62,23 @@ const postNewProduct = async (req, res) => {
   try {
     const { title, image, price, stock, category, sold } = req.body;
     console.log(req.body);
-    if (!title || !image || !price || !stock || !category || !sold) {
+    if (!title || !image || !price || !stock || !sold) {
       res.status(404).send("Solicitud incompleta");
     } else {
-      const create = await Product.create({
+      const createProduct = await Product.create({
         id: `MLA${Math.round(Math.random() * 1000000000)}`,
         title,
         image,
         price,
         stock,
-        category,
         sold
       });
       const foundCategory = await Category.findOne({
         where: {
-          id: category,
+          name: category,
         },
       });
-      await create.addCategory(foundCategory);
+      await createProduct.addCategory(foundCategory);
       
       res.status(200).send("Nuevo producto creado correctamente!");
     }
@@ -91,14 +89,61 @@ const postNewProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
+    try {
+       let productDelete = await Product.update(  {
+             visible: 1, },
+          {
+             where: { id: id },
+          }
+       );
+ 
+       res.send("producto no visible para clientes");
+    } catch (error) {
+       console.log(error);
+       res.status(400).send(error);
+    }
+ };
+
+ const modifyProduct = async (req, res) => {
+  const { id } = req.params;
+  const { title, image, price, category, stock, description, } = req.body;
   try {
-    const removed = await Product.destroy({ where: { id } });
-    if (removed) return res.send("Producto Eliminado");
-    res.send("ID no existe");
+    // busco el producto
+    const product = await Product.findByPk(id);
+    //sino esta
+    if (!product) res.status(404).send("ID not found");
+    //si esta actualizo dependiendo los datos que me ingresan
+    product.title = title ? title : product.title;
+    product.image = image ? image : product.image;
+    product.price = price ? price : product.price;
+    product.category = category ? category : product.category;
+    product.stock = stock ? stock : product.stock;
+    product.description = description ? description : product.description;
+
+    await product.save(); // guardamos los cambios
+    res.send("Producto Actualizado");
+    //console.log(JSON.stringify(product))
   } catch (error) {
-    res.json({ error: error.message });
+    res.send({ error: error.message });
   }
-}
+};
 
+ // ruta para actualizar el carrito dw compras
+ const addShoppingcart = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findByPk(id)
+    if (product) {
+      const { sold, stock } = req.body
+      if (stock > product.stock) return res.status(404).send("Lo sentimos la cantidad de productos que intentas comprar excede nuestro stock")
+      product.stock = product.stock - stock
+      product.sold = product.sold + sold
+      await product.save()
+      return res.send("La compra se realizó correctamente.")
+    }
+  } catch (error) {
+    res.send({ error: error.message })
+  }};
 
- module.exports = {getAllProducts, getProductId, getPicture, getDescription, postNewProduct, deleteProduct};
+ 
+  module.exports = {getAllProducts, getProductId, getPicture, getDescription, postNewProduct, deleteProduct, modifyProduct, addShoppingcart};
