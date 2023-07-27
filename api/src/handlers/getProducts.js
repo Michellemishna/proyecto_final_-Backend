@@ -62,7 +62,7 @@ const postNewProduct = async (req, res) => {
   try {
     const { title, image, price, stock, category, sold, description } = req.body;
     console.log(req.body);
-    if (!title || !image || !price || !stock || !sold || !description) {
+    if (!title || !image || !price || !stock || !description) {
       res.status(404).send("Solicitud incompleta");
     } else {
       const createProduct = await Product.create({
@@ -71,7 +71,7 @@ const postNewProduct = async (req, res) => {
         image,
         price,
         stock,
-        sold,
+        sold:0,
         category,
         description,
       });
