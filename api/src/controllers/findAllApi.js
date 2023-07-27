@@ -79,7 +79,7 @@ const findDb = async () => {
 }; */
 
 const findCategoryDB = async () => {
-  const searchCategory = await Category.findAll({ include: { all: true } });
+  const searchCategory = await Category.findAll();
   return searchCategory;
 };
 

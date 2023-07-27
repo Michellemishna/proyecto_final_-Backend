@@ -72,11 +72,12 @@ const postNewProduct = async (req, res) => {
         price,
         stock,
         sold,
+        category,
         description,
       });
       const foundCategory = await Category.findOne({
         where: {
-          name: category,
+          id: category,
         },
       });
       await createProduct.addCategory(foundCategory);
