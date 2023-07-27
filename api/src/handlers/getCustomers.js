@@ -1,4 +1,5 @@
 const { Customer, Order } = require("../db");
+//const validarUser = require("../controllers/loginCustomerContr");
 
 const getCustomers = async (req, res) => {
   const { name } = req.query;
@@ -28,18 +29,26 @@ const getCustomerId = async (req, res) => {
 };
 
 const createCustomer = async (req, res) => {
-  const { name, user, password, image, email, phone, address } =
-    req.body;
-    let isBaned = false;
+  const { name, user, password, image, email, phone, address } = req.body;
+  let isBaned = false;
   try {
     //validaciones
-    if (!name || !user || !password || !email)
-      return res
-        .status(404)
-        .send("No dejes ningun campo vacio");
+    if (!password || !email)
+      return res.status(404).send("No dejes ningun campo vacio");
 
     if (await Customer.findByPk(user))
       return res.status(304).send("Cliente registrado");
+
+    //##############   VALIDAR USUARIO   ################
+
+    // const loginUser = await validarUser(password, email);
+    // if (loginUser) {
+    //   console.log(loginUser);
+    //   return res.json(loginUser);
+    // }
+
+    //##############   VALIDAR USUARIO   ################
+
     const newCustomer = await Customer.create({
       name,
       user,
@@ -54,45 +63,50 @@ const createCustomer = async (req, res) => {
     res.send("Cliente Creado con Exito!");
   } catch (error) {
     res.send({ error: error.message });
-  }};
+  }
+};
 
+const modifyCustomer = async (req, res) => {
+  const { id } = req.params;
+  const { name, user, image, email, phone, address, baneado } = req.body;
+  try {
+    // busca al customer
+    const customer = await Customer.findByPk(id);
 
-  const modifyCustomer = async (req, res) => {
-    const { id } = req.params;
-    const { name, user, image, email, phone, address, baneado } = req.body;
-    try {
-      // busca al customer
-      const customer = await Customer.findByPk(id);
+    if (!customer) res.status(404).send("ID not found");
+    //si existe actualizo dependiendo los datos
+    customer.name = name ? name : customer.name;
+    customer.user_banned = baneado;
+    customer.user = user ? user : customer.user;
+    customer.image = image ? image : customer.image;
+    customer.email = email ? email : customer.email;
+    customer.phone = phone ? phone : customer.phone;
+    customer.default_shipping_address = address
+      ? address
+      : customer.default_shipping_address;
+    await customer.save(); // guardamos los cambios
+    res.send("Update");
+  } catch (error) {
+    res.send({ error: error.message });
+  }
+};
 
-      if (!customer) res.status(404).send("ID not found");
-      //si existe actualizo dependiendo los datos
-      customer.name = name ? name : customer.name;
-      customer.user_banned = baneado;
-      customer.user = user ? user : customer.user;
-      customer.image = image ? image : customer.image;
-      customer.email = email ? email : customer.email;
-      customer.phone = phone ? phone : customer.phone;
-      customer.default_shipping_address = address ? address : customer.default_shipping_address;
-      await customer.save(); // guardamos los cambios
-      res.send("Update");
-
-    } catch (error) {
-      res.send({ error: error.message });
-    }
-  };
-  
 //eliminar customer
 const deleteCustomer = async (req, res) => {
-    const { id } = req.params;
-    try {
-      const removed = await Customer.destroy({ where: { id } });
-      if (removed) return res.send("");
-      res.send("No existe ID");
-    } catch (error) {
-      res.json({ error: error.message });
-    }
-  };
+  const { id } = req.params;
+  try {
+    const removed = await Customer.destroy({ where: { id } });
+    if (removed) return res.send("");
+    res.send("No existe ID");
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
 
-
-
-module.exports = { getCustomers, getCustomerId, createCustomer, modifyCustomer, deleteCustomer };
+module.exports = {
+  getCustomers,
+  getCustomerId,
+  createCustomer,
+  modifyCustomer,
+  deleteCustomer,
+};
