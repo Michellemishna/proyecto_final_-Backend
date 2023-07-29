@@ -1,5 +1,7 @@
 const { Customer, Order } = require("../db");
-//const validarUser = require("../controllers/loginCustomerContr");
+//const { validarUser, jwt } = require("../controllers/loginCustomerContr");
+const jwt = require("jsonwebtoken");
+const { serialize } = require("cookie");
 
 const getCustomers = async (req, res) => {
   const { name } = req.query;
@@ -30,7 +32,7 @@ const getCustomerId = async (req, res) => {
 
 const createCustomer = async (req, res) => {
   const { name, user, password, image, email, phone, address } = req.body;
-  let isBaned = false;
+
   try {
     //validaciones
     if (!password || !email)
@@ -43,7 +45,6 @@ const createCustomer = async (req, res) => {
 
     // const loginUser = await validarUser(password, email);
     // if (loginUser) {
-    //   console.log(loginUser);
     //   return res.json(loginUser);
     // }
 
@@ -102,6 +103,34 @@ const deleteCustomer = async (req, res) => {
     res.json({ error: error.message });
   }
 };
+
+// const loginCustomers = async (req, res) => {
+//   const { password, email } = req.body;
+//   console.log(password, email);
+
+//   if (email === "admin@email.com" && password === "admin") {
+//     const token = jwt.sign(
+//       {
+//         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
+//         email: "admin@email.com",
+//         username: "grupo19",
+//       },
+//       "secret"
+//     );
+
+//     const serialized = serialize("myTokenName", token, {
+//       httpOnly: true,
+
+//       sameSite: "strict",
+//       maxAge: 1000 * 60 * 60 * 24 * 30,
+//       path: "/",
+//     });
+//     res.setHeader("Set-Cookie", serialized);
+//     return res.json("Logeado Correctamente...!");
+//   }
+
+//   return res.status(401).json({ error: "Usuario no registrado" });
+// };
 
 module.exports = {
   getCustomers,

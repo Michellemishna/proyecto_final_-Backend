@@ -1,7 +1,9 @@
 const { Product, Category } = require("../db");
 const jwt = require("jsonwebtoken");
+const { serialize } = require("cookie");
 
 const validarUser = async (email, password) => {
+  //console.log(email, password);
   if (email === "admin@email.com" && password === "admin") {
     const token = jwt.sign(
       {
@@ -14,7 +16,7 @@ const validarUser = async (email, password) => {
 
     const serialized = serialize("myTokenName", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV == "production",
+
       sameSite: "strict",
       maxAge: 1000 * 60 * 60 * 24 * 30,
       path: "/",
@@ -24,4 +26,4 @@ const validarUser = async (email, password) => {
   }
 };
 
-module.exports = validarUser;
+module.exports = { validarUser, jwt };
