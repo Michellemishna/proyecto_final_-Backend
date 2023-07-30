@@ -87,8 +87,8 @@ Wishlist.belongsToMany(Product, { through: "wishlist_product" });
 Product.belongsToMany(Wishlist, { through: "wishlist_product" });
 
 //relacion de carrito
-Cart.belongsToMany(Product) //aqui se agrega lo de compra?
-Product.belongsToMany(Cart)
+Cart.belongsToMany(Product, { through: "cart_product" }); //aqui se agrega lo de compra?
+Product.belongsToMany(Cart, { through: "cart_product"});
 
 module.exports = {
   ...sequelize.models,
