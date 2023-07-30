@@ -64,7 +64,7 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Category, Customer, Order, Product, Admin, Review, Wishlist } =  sequelize.models;
+const { Category, Customer, Order, Product, Admin, Review, Wishlist, Cart } =  sequelize.models;
 
 Category.belongsToMany(Product, { through: "category_product" });
 Product.belongsToMany(Category, { through: "category_product" });
@@ -85,6 +85,10 @@ Review.belongsTo(Product);
 
 Wishlist.belongsToMany(Product, { through: "wishlist_product" });
 Product.belongsToMany(Wishlist, { through: "wishlist_product" });
+
+//relacion de carrito
+Cart.belongsToMany(Product) //aqui se agrega lo de compra?
+Product.belongsToMany(Cart)
 
 module.exports = {
   ...sequelize.models,
