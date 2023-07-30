@@ -11,18 +11,11 @@ module.exports = (sequelize) => {
         unique: true,
         allowNull: false,
       },
-      confirmed: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-     },
       amount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       shipping_address: {
-        type: DataTypes.TEXT,
-      },
-      order_address: {
         type: DataTypes.TEXT,
       },
       order_email: {
@@ -34,11 +27,8 @@ module.exports = (sequelize) => {
       order_status: {
         defaultValue: "pendiente",
         type: DataTypes.ENUM("realizada","cancelada", "pendiente"),
-      },
-      shopping: {
-        type: DataTypes.ARRAY(DataTypes.JSON),
-        allowNull: false,
       }
+      
     },
     { timestamps: false }
   );

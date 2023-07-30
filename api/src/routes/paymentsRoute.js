@@ -1,15 +1,14 @@
-// const { Router } = require("express");
-// const { postPayments, getSuccess, getFailure, getPending} = require("../handlers/getPayments");
-// const router = Router();
+
+const { Router } = require("express");
+const { postPayments, getState} = require("../handlers/getPayments");
+const router = Router();
 
 
-// // router.get("/", getOrder);
-// router.post("/", postPayments);
-// router.get("/success/:id", getSuccess)
-// router.get("/failure/:id", getFailure)
-// router.get("/pending/:id", getPending)
-
+router.post("/", postPayments);
+router.get("/feedback", getState)
 
 
 
-// module.exports = router;
+
+
+module.exports = router;
