@@ -15,6 +15,7 @@ const orderRoute = require("./orderRoute");
 const loginUsuarios = require("./loginUsuarios.js");
 const dataByToken = require("./dataToken.js");
 const logoutUsuarios = require("./logoutUsuario.js");
+const authRoutes = require("./auth.routes");
 
 router.use("/products", productRoute);
 router.use("/categories", categoriesRoute);
@@ -28,6 +29,7 @@ router.use("/order", orderRoute);
 router.use("/login", loginUsuarios);
 router.use("/logout", logoutUsuarios);
 router.use("/token", dataByToken);
+router.use("/auth", authRoutes);
 // router.use("/payment", paymentsRoute);
 
 router.use("*", function (req, res) {

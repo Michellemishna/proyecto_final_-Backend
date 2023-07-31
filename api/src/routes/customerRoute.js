@@ -5,7 +5,6 @@ const {
   createCustomer,
   modifyCustomer,
   deleteCustomer,
-  loginCustomers,
 } = require("../handlers/getCustomers");
 const router = Router();
 
