@@ -4,7 +4,7 @@ const { Product } = require("../../models/Product");
 const getCartById = async (id) => {
   try {
     const cart = await Cart.findAll({
-      where: { userId: id },
+      where: { CustomerUser: id },
       include: Product,
     });
     return cart;
