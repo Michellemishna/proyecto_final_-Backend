@@ -19,7 +19,7 @@ const getCustomerId = async (req, res) => {
   const { id } = req.params;
   try {
     const search = await Customer.findByPk(id, {
-      include: { model: Order, throught: { attributes: [] } },
+      include: { model: Order, through: { attributes: [] } },
     });
     if (search) res.send(search);
     else res.status(404).send("No existe ID");
