@@ -14,7 +14,7 @@ const reviewsRoute = require("./reviewsRoute");
 const orderRoute = require("./orderRoute");
 const paymentsRoute = require("./paymentsRoute");
 const mercadopagoRoute = require('./mercadopagoRoute');
-const carritoRoute = require("./carrito");
+const carritoRoute = require("./cartRoute");
 
 
 router.use('/products', productRoute);
