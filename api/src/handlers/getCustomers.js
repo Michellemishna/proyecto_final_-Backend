@@ -20,9 +20,7 @@ const getCustomers = async (req, res) => {
 const getCustomerId = async (req, res) => {
   const { id } = req.params;
   try {
-    const search = await Customer.findByPk(id, {
-      include: { model: Order, throught: { attributes: [] } },
-    });
+    const search = await Customer.findByPk(id, { include: { all: true }});
     if (search) res.send(search);
     else res.status(404).send("No existe ID");
   } catch (error) {

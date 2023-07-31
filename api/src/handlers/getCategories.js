@@ -36,18 +36,18 @@ const getCategories = async (req, res) => {
 const categoryId = async (req, res) => {
   try {
     const { id } = req.params;
-    const allProducts = await findDb();
+    let allCategories = await findCategoryDB()
     if (id) {
-      let found = await allProducts.filter((product) =>
-        product.category ? product.category === id : product.category.id === id
-      );
-      res.status(200).send(found);
+      allCategories = await Category.findByPk(id); 
+     if(allCategories) {
+      res.status(200).send(allCategories);
+      console.log(allCategories)
     } else {
       res.status(400).send("error");
-    }
+    }}
   } catch (error) {
     console.log(error);
   }
-};
+}
 
 module.exports = { getCategories, categoryId };

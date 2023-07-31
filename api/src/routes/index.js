@@ -16,6 +16,9 @@ const loginUsuarios = require("./loginUsuarios.js");
 const dataByToken = require("./dataToken.js");
 const logoutUsuarios = require("./logoutUsuario.js");
 const authRoutes = require("./auth.routes");
+const paymentsRoute = require("./paymentsRoute");
+const mercadopagoRoute = require("./mercadopagoRoute");
+const carritoRoute = require("./cartRoute");
 
 router.use("/products", productRoute);
 router.use("/categories", categoriesRoute);
@@ -25,6 +28,10 @@ router.use("/admin", adminRoute);
 router.use("/filter-sorts", filterSortsRoute);
 router.use("/review", reviewsRoute);
 router.use("/order", orderRoute);
+router.use("/cart", carritoRoute);
+
+router.use("/payment", paymentsRoute);
+router.use("/mercadopago", mercadopagoRoute);
 
 router.use("/login", loginUsuarios);
 router.use("/logout", logoutUsuarios);

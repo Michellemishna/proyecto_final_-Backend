@@ -28,7 +28,7 @@ const { DB_DEPLOY, DB_USER,DB_PASSWORD,DB_HOST } = process.env;
 //           native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 //        }
 //     );
-//const sequelize = new Sequelize(`postgres://gastonnietoarte:U2IoviJ4eFRz@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/ESTABLE`, {
+// const sequelize = new Sequelize(`postgres://gastonnietoarte:U2IoviJ4eFRz@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/ESTABLE`, {
 
      //const sequelize = new Sequelize(`postgres://gastonnietoarte:U2IoviJ4eFRz@ep-wispy-wildflower-790416.us-east-2.aws.neon.tech/ESTABLE`, {
     //   logging: false,
@@ -64,13 +64,15 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Category, Customer, Order, Product, Admin, Review, Wishlist } =  sequelize.models;
+const { Category, Customer, Order, Product, Admin, Review, Wishlist, Cart } =  sequelize.models;
 
 Category.belongsToMany(Product, { through: "category_product" });
 Product.belongsToMany(Category, { through: "category_product" });
 
-Customer.belongsToMany(Order, { through: "customer_order" });
-Order.belongsToMany(Customer, { through: "customer_order" });
+Customer.hasMany(Order);
+Order.belongsTo(Customer, {foreignKey: 'CustomerUser', // El nombre de la columna de clave foránea en la tabla Order
+allowNull: false,
+});
 
 Order.belongsToMany(Product, { through: "order_product" });
 Product.belongsToMany(Order, { through: "order_product" });
@@ -83,6 +85,10 @@ Review.belongsTo(Product);
 
 Wishlist.belongsToMany(Product, { through: "wishlist_product" });
 Product.belongsToMany(Wishlist, { through: "wishlist_product" });
+
+//relacion de carrito
+Cart.belongsToMany(Product, { through: "cart_product" }); //aqui se agrega lo de compra?
+Product.belongsToMany(Cart, { through: "cart_product"});
 
 module.exports = {
   ...sequelize.models,

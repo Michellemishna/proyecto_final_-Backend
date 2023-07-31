@@ -31,8 +31,7 @@ module.exports = (sequelize) => {
       is_Active:{
         type: DataTypes.BOOLEAN,
         defaultValue:true
-      }
-      ,
+      },
       default_shipping_address: {
         type: DataTypes.TEXT,
       },
