@@ -2,8 +2,11 @@ require("dotenv").config();
 const LOCAL_BACK = "http://localhost:3001";
 const URL_DEPLOY = "proyectofinal-production-83ce.up.railway.app";
 const axios = require("axios");
-const { ACCESS_TOKENC } = process.env;
-
+const { ACCESS_TOKENC, emailsend } = process.env;
+const transporter = require("../controllers/nodemailer");
+const {orderConfirmation} = require("../utils/Confirmation")
+const {orderCancelation} = require("../utils/Cancelation")
+const {orderPending} = require("../utils/Pending")
 
 // SDK MercadoPago
 const mercadopago = require("mercadopago");
@@ -68,21 +71,50 @@ const postPayments = async (req, res) => {
 //     }}
  
 const getSuccess = async (req, res) => {
-    const {id} = req.params;
+  const { id } = req.params;
 
   try {
-    await axios.put(`${LOCAL_BACK}/order/${id}`, {order: "realizada"})
-    console.log(id)
+    // Actualizar el estado de la orden a "realizada"
+    await axios.put(`${LOCAL_BACK}/order/${id}`, { order: "realizada" });
+
+    // Obtener la información de la orden
+    const response = await axios.get(`${LOCAL_BACK}/order/${id}`);
+    const orderData = response.data;
+    const orderemail = orderData.order_email;
+    // Enviar el correo electrónico
+    const template = orderConfirmation()
+    await transporter.sendMail({
+      from: `<Nueva notificación>, ${emailsend}`, // Remitente
+      to: `${orderemail}`, // Destinatario
+      subject: `Compra realizada con éxito!`, // Asunto del correo
+      html: `${template}`, // Cuerpo del correo en formato HTML
+    });
+
+    // Redirigir al cliente a la página de confirmación con el ID de la orden
     res.redirect(`http://localhost:5173/confirmacion/${id}`);
   } catch (error) {
     res.send({ error: error.message });
-  }};
-  
+  }
+};
+
   const getFailure =async(req, res) => {
     const {id} = req.params;
   
     try {
       await axios.put(`${LOCAL_BACK}/order/${id}`, {order: "cancelada"})
+
+    const response = await axios.get(`${LOCAL_BACK}/order/${id}`);
+    const orderData = response.data;
+    const orderemail = orderData.order_email;
+   
+    const template = orderCancelation(); //
+    await transporter.sendMail({
+      from: `<Nueva notificación>, ${emailsend}`, // Remitente
+      to: `${orderemail}`, // Destinatario
+      subject: `Lo sentimos tu compra a sido cancelada!`, // Asunto del correo
+      html: `${template}`, // Cuerpo del correo en formato HTML
+    });
+
       res.redirect(`http://localhost:5173/confirmacion/${id}`);
     } catch (error) {
       res.send({ error: error.message });
@@ -93,7 +125,20 @@ const getSuccess = async (req, res) => {
       
         try {
           await axios.put(`${LOCAL_BACK}/order/${id}`, {order: "pendiente"})
-          res.redirect(`http://localhost:5173/confirmacion/${id}`);
+
+    const response = await axios.get(`${LOCAL_BACK}/order/${id}`);
+    const orderData = response.data;
+    const orderemail = orderData.order_email;
+   
+    const template = orderPending(); //
+    await transporter.sendMail({
+      from: `<Nueva notificación>, ${emailsend}`, // Remitente
+      to: `${orderemail}`, // Destinatario
+      subject: `Tu compra esta casi lista!`, // Asunto del correo
+      html: `${template}`, // Cuerpo del correo en formato HTML
+    });
+
+      res.redirect(`http://localhost:5173/confirmacion/${id}`);
         } catch (error) {
           res.send({ error: error.message });
         }
