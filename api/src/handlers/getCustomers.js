@@ -20,7 +20,7 @@ const getCustomers = async (req, res) => {
 const getCustomerId = async (req, res) => {
   const { id } = req.params;
   try {
-    const search = await Customer.findByPk(id, { include: { all: true }});
+    const search = await Customer.findByPk(id, { include: { all: true } });
     if (search) res.send(search);
     else res.status(404).send("No existe ID");
   } catch (error) {
@@ -38,15 +38,6 @@ const createCustomer = async (req, res) => {
 
     if (await Customer.findByPk(user))
       return res.status(304).send("Cliente registrado");
-
-    //##############   VALIDAR USUARIO   ################
-
-    // const loginUser = await validarUser(password, email);
-    // if (loginUser) {
-    //   return res.json(loginUser);
-    // }
-
-    //##############   VALIDAR USUARIO   ################
 
     const newCustomer = await Customer.create({
       name,

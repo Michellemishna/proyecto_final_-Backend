@@ -1,14 +1,43 @@
 const axios = require("axios");
 const { json } = require("express");
 const jwt = require("jsonwebtoken");
+const { Customer } = require("../db");
 //const secretToken = process.env.SECRET_TOKEN;
 
 const verifyGoogleAccessToken = async (google_access_token) => {
-  const { data } = await axios(
-    `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${google_access_token}`
-  );
-  console.log(data);
-  return data;
+  const tokenInfoUrl = `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${google_access_token}`;
+  const userInfoUrl = `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${google_access_token}`;
+
+  try {
+    // Hacer la solicitud al endpoint de tokenInfo para obtener información básica del token
+    const { data: tokenInfo } = await axios.get(tokenInfoUrl);
+
+    // Hacer la solicitud al endpoint de userInfo para obtener más información del usuario, incluida la imagen
+    const { data: userInfo } = await axios.get(userInfoUrl);
+
+    const search = await Customer.findOne({
+      where: { email: tokenInfo.email },
+    });
+    // Combinar la información del token y la información del usuario en un solo objeto
+    if (!search) {
+      const newCustomer = await Customer.create({
+        name: "...",
+        user: "...",
+        password: "contraseña de Google",
+        image: userInfo.picture,
+        email: tokenInfo.email,
+        phone: "...",
+        user_banned: false,
+        default_shipping_address: "...",
+        is_Active: true,
+      });
+      return newCustomer;
+    }
+    return search;
+  } catch (error) {
+    console.error("Error al verificar el token de Google:", error);
+    throw error;
+  }
 };
 
 const googleLogin = async (req, res) => {
@@ -29,7 +58,7 @@ const googleLogin = async (req, res) => {
       email: verifyToken.email,
       name: verifyToken.name,
       scope: verifyToken.scope,
-      audience: verifyToken.audience,
+      picture: verifyToken.picture,
       issued_to: verifyToken.issued_to,
     },
     "secret",
@@ -38,7 +67,7 @@ const googleLogin = async (req, res) => {
     }
   );
 
-  console.log(token, "este es el token");
+  //console.log(token, "este es el token");
   res.status(200).json({ result: token });
 };
 

@@ -1,18 +1,23 @@
 const jwt = require("jsonwebtoken");
 const { serialize } = require("cookie");
+const { Customer } = require("../db");
 //const { SECRET_TOKEN } = process.env;
 
 const loginCustomer = async (req, res) => {
   const { password, email } = req.body;
-
+  const search = await Customer.findOne({ where: { password, email } });
   try {
-    if (email === "admin@email.com" && password === "admin") {
+    if (search) {
       // Autenticación exitosa, generar el token JWT
       const token = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expiración en 30 días
-          email: "admin@email.com",
-          username: "grupo19",
+          email: search.email,
+          nombre: search.name,
+          usuario: search.user,
+          imagen: search.image,
+          telefono: search.phone,
+          estado: search.user_banned,
         },
         "secret" // Aquí deberías usar un secreto más seguro y almacenarlo en una variable de entorno
       );
@@ -31,9 +36,12 @@ const loginCustomer = async (req, res) => {
       return res.json({
         token, // Puedes enviar el token en la respuesta si lo necesitas en el cliente
         user: {
-          email: "admin@email.com",
-          username: "grupo19",
-          // Otros datos del usuario que desees incluir
+          email: search.email,
+          nombre: search.name,
+          usuario: search.user,
+          imagen: search.image,
+          telefono: search.phone,
+          estado: search.user_banned,
         },
       });
     } else {
