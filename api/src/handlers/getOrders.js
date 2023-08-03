@@ -19,7 +19,7 @@ const getOrder= async (req, res) => {
 const getOrderById = async (req, res) => {
   const { id } = req.params
   try {
-    const found = await Order.findByPk(id, { include: { model: Customer, throught: { attributes: [] } } })
+    const found = await Order.findByPk(id, { include: { all: true } })
     if (found) res.send(found)
     else res.status(404).send("No exite Id")
   } catch (error) {
@@ -28,19 +28,20 @@ const getOrderById = async (req, res) => {
 
 // crear orden de compra
 const createOrder = async (req, res) => {
-  const { customerUser, email, items  } = req.body;
+  const { CustomerUser, email, items } = req.body;
   
 // monto total a pagar 
   const precio = items.map(e => parseFloat(e.unit_price) * parseFloat(e.quantity)).reduce((a, b) => a + b)
   const date = new Date();
   const order_date = date.toISOString();
-  const found = await Customer.findByPk(customerUser);
+  const found = await Customer.findByPk(CustomerUser);
 
   try {
     const obj = {
       amount: precio, // monto 
       order_email: email,
-      order_date: order_date, 
+      order_date: order_date,
+      shipping_address: "", // 
     }
 
  const newOrder = await Order.create(obj)
