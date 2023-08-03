@@ -1,4 +1,4 @@
-const { Customer, Order } = require("../db");
+const { Customer, Order, Product } = require("../db");
 
 const getOrder= async (req, res) => {
   const { email } = req.body;
@@ -19,7 +19,7 @@ const getOrder= async (req, res) => {
 const getOrderById = async (req, res) => {
   const { id } = req.params
   try {
-    const found = await Order.findByPk(id, { include: { model: Customer, throught: { attributes: [] } } })
+    const found = await Order.findByPk(id, { include: { all: true } })
     if (found) res.send(found)
     else res.status(404).send("No exite Id")
   } catch (error) {
@@ -28,30 +28,36 @@ const getOrderById = async (req, res) => {
 
 // crear orden de compra
 const createOrder = async (req, res) => {
-  const { customerUser, shopping, email, order_status,
-    default_shipping_address  } = req.body;
+  const { CustomerUser, email, items } = req.body;
   
 // monto total a pagar 
   const precio = items.map(e => parseFloat(e.unit_price) * parseFloat(e.quantity)).reduce((a, b) => a + b)
-  try {
-    const date = new Date()
-    const newOrder = {
-      amount: precio, // monto 
-      shipping_address:  default_shipping_address, // direccion de envio
-      order_address: "", // direccion de pedido
-      order_email: email,
-      order_date: date,
-      order_status: order_status, 
-      shopping: shopping, 
-    }
-    const searchCustomer = await Customer.findByPk(customerUser)
-     searchCustomer.addOrder(newOrder)
+  const date = new Date();
+  const order_date = date.toISOString();
+  const found = await Customer.findByPk(CustomerUser);
 
-    res.send(newOrder)
-  } catch (error) {
-    res.status(404).send({ error: error.message })
+  try {
+    const obj = {
+      amount: precio, // monto 
+      order_email: email,
+      order_date: order_date,
+      shipping_address: "", // 
+    }
+
+ const newOrder = await Order.create(obj)
+
+   await newOrder.setCustomer(found)
+   for (const item of items) {
+    const product = await Product.findByPk(item.id);
+    await newOrder.addProduct(product);
   }
+  console.log(newOrder);
+ res.send(newOrder);
+} catch (error) {
+ res.status(404).send({ error: error.message });
 }
+};
+
 
 //modifica la orden
 const modifyOrder = async (req, res) => {

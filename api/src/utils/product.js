@@ -74,7 +74,7 @@ const productos = [
   {
     id: "MLA1116993757",
     title:
-      "Notebook Hp 15-dy2061la Plateada Natural 15.6 Intel Core I3 1125g4  8gb De Ram 256gb Ssd Intel Uhd Graphics Xe G4 48eus 1366x768px Windows 10 Home",
+      "Notebook Hp 15-dy2061la Plateada Natural 15.6 Intel Core I3 1125g4  8gb De Ram 256gb Ssd Intel",
     image: "http://http2.mlstatic.com/D_644602-MLA48643624987_122021-O.jpg",
     price: 385999,
     category: "MLA1652",
@@ -98,7 +98,7 @@ const productos = [
   },
   {
     id: "MLA1122243562",
-    title: "Impresora A Color MultifunciÃ³n Hp Ink Tank 315 Negra 100v/240v",
+    title: "Impresora A Color Multifunción Hp Ink Tank 315 Negra 100v/240v",
     image: "http://http2.mlstatic.com/D_838858-MLA41730657807_052020-O.jpg",
     price: 140390,
     category: "MLA1676",
@@ -135,7 +135,7 @@ const productos = [
   {
     id: "MLA1136259403",
     title:
-      "Impresora A Color MultifunciÃ³n Hp Smart Tank 530 Con Wifi Negra 200v - 240v",
+      "Impresora A Color Multifunción Hp Smart Tank 530 Con Wifi Negra 200v - 240v",
     image: "http://http2.mlstatic.com/D_993309-MLA45074625714_032021-O.jpg",
     price: 179400,
     category: "MLA1676",
@@ -148,7 +148,7 @@ const productos = [
   {
     id: "MLA1140365970",
     title:
-      "Notebook Hp 14-dq2029la Plata Natural 14  Intel Core I5 1135g7  8gb De Ram 256gb Ssd Intel Iris Xe Graphics G7 80eus 1366x768px Windows 10 Home",
+      "Notebook Hp 14-dq2029la Plata Natural 14  Intel Core I5 1135g7  8gb De Ram 256gb Ssd Intel",
     image: "http://http2.mlstatic.com/D_822203-MLA52221738161_102022-O.jpg",
     price: 439999,
     category: "MLA1652",
@@ -270,7 +270,7 @@ const productos = [
   {
     id: "MLA1361660897",
     title:
-      "Notebook Hp 15-ef2514la Plata 15.6 Amd Ryzen 7 5700u  8gb De Ram 512gb Ssd Amd Radeon Rx Vega 8 (ryzen 4000/5000) 1366x768px Windows 11 Home",
+      "Notebook Hp 15-ef2514la Plata 15.6 Amd Ryzen 7 5700u  8gb De Ram 512gb Ssd Amd Radeon Rx Vega 8",
     image: "http://http2.mlstatic.com/D_982323-MLA51606812711_092022-O.jpg",
     price: 524999,
     category: "MLA1652",
@@ -307,7 +307,7 @@ const productos = [
   {
     id: "MLA1366062513",
     title:
-      "Impresora A Color MultifunciÃ³n Hp Smart Tank 720 Con Wifi Blanca 100v/240v",
+      "Impresora A Color Multifunción Hp Smart Tank 720 Con Wifi Blanca 100v/240v",
     image: "http://http2.mlstatic.com/D_979306-MLA52224143087_102022-O.jpg",
     price: 185000,
     category: "MLA1676",
@@ -444,7 +444,7 @@ const productos = [
   {
     id: "MLA1420557236",
     title:
-      "Notebook Hp Pavilion 13-bb0003la Plata Natural 13.3  Intel Core I5 1135g7  8gb De Ram 256gb Ssd 16gb Optane Intel Iris Xe Graphics G7 80eus 1920x1080px Windows 10 Home",
+      "Notebook Hp Pavilion 13-bb0003la Plata Natural 13.3",
     image: "http://http2.mlstatic.com/D_759223-MLA48455080889_122021-O.jpg",
     price: 654999,
     category: "MLA1652",
@@ -508,7 +508,7 @@ const productos = [
   {
     id: "MLA1452741120",
     title:
-      "Notebook Hp 240 G7 Plateado Ceniza Oscuro 14  Intel Core I3 1005g1  8gb De Ram 1tb Hdd Intel Uhd Graphics G1 (ice Lake 32 Eu) 1366x768px Windows 10 Home",
+      "Notebook Hp 240 G7 Plateado Ceniza Oscuro 14  Intel Core I3 1005g1  8gb De Ram 1tb Hdd Intel ",
     image: "http://http2.mlstatic.com/D_694019-MLA46479872032_062021-O.jpg",
     price: 349999,
     category: "MLA1652",
@@ -594,7 +594,7 @@ const productos = [
   {
     id: "MLA913334049",
     title:
-      "Impresora A Color MultifunciÃ³n Hp Smart Tank 530 Con Wifi Negra 100v/240v",
+      "Impresora A Color Multifunción Hp Smart Tank 530 Con Wifi Negra 100v/240v",
     image: "http://http2.mlstatic.com/D_717117-MLA45074626662_032021-O.jpg",
     price: 189106,
     category: "MLA1676",
