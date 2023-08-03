@@ -3,6 +3,9 @@ const { Customer, Order } = require("../db");
 const jwt = require("jsonwebtoken");
 const { serialize } = require("cookie");
 const bcrypt = require("bcrypt")
+const transporter = require("../controllers/nodemailer");
+const {newCustomer} = require("../utils/newCustomer");
+const {emailsend} = process.env;
 
 const getCustomers = async (req, res) => {
   const { name } = req.query;
@@ -67,6 +70,15 @@ const createCustomer = async (req, res) => {
   } catch (error) {
     res.send({ error: error.message });
   }
+
+  //CORREO PARA NUEVO USUARIO
+  const template = newCustomer();
+  await transporter.sendMail({
+    from: `<Nueva notificación>, ${emailsend}`,
+    to: email,
+    subject: `Bienvenido a TechNexus!`,
+    html: `${template}`
+  })
 };
 
 const modifyCustomer = async (req, res) => {
