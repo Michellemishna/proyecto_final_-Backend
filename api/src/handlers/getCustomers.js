@@ -2,6 +2,7 @@ const { Customer, Order } = require("../db");
 //const { validarUser, jwt } = require("../controllers/loginCustomerContr");
 const jwt = require("jsonwebtoken");
 const { serialize } = require("cookie");
+const bcrypt = require("bcrypt");
 
 const getCustomers = async (req, res) => {
   const { name } = req.query;
@@ -33,16 +34,28 @@ const createCustomer = async (req, res) => {
 
   try {
     //validaciones
-    if (!password || !email)
+    if (!name || !user || !password || !email || !phone || !address)
       return res.status(404).send("No dejes ningun campo vacio");
 
     if (await Customer.findByPk(user))
       return res.status(304).send("Cliente registrado");
 
+    //##############   VALIDAR USUARIO   ################
+
+    // const loginUser = await validarUser(password, email);
+    // if (loginUser) {
+    //   return res.json(loginUser);
+    // }
+
+    //HASH DE CONTRASEÑA A BCRYPT PARA PROTECCION
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    //##############   VALIDAR USUARIO   ################
+
     const newCustomer = await Customer.create({
       name,
       user,
-      password,
+      password: hashedPassword, //Contraseña protegida
       image,
       email,
       phone,

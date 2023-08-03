@@ -1,8 +1,12 @@
 require("dotenv").config();
 const LOCAL_BACK = "http://localhost:3001";
-const URL_DEPLOY = "https://deploy-backpf.onrender.com";
+const URL_DEPLOY = "proyectofinal-production-83ce.up.railway.app";
 const axios = require("axios");
-const { ACCESS_TOKENC } = process.env;
+const { ACCESS_TOKENC, emailsend } = process.env;
+const transporter = require("../controllers/nodemailer");
+const { orderConfirmation } = require("../utils/Confirmation");
+const { orderCancelation } = require("../utils/Cancelation");
+const { orderPending } = require("../utils/Pending");
 
 // SDK MercadoPago
 const mercadopago = require("mercadopago");
@@ -11,6 +15,7 @@ mercadopago.configure({
 });
 
 const postPayments = async (req, res) => {
+  // ya puedo poner la camara - lo pongo?
   const { items, email, CustomerUser } = req.body;
   try {
     const orden = (
@@ -28,102 +33,118 @@ const postPayments = async (req, res) => {
       CustomerUser: CustomerUser,
       email: email,
       back_urls: {
-        success: "http://localhost:3001/payment/feedback",
-        failure: "http://localhost:3001/paymentfeedback",
-        pending: "",
+        success: `http://localhost:3001/payment/success/${orden.id}`,
+        failure: `http://localhost:3001/payment/failure/${orden.id}`,
+        pending: `http://localhost:3001/payment/pending/${orden.id}`,
       },
       auto_return: "approved",
+      // notification_url: "http://localhost:3001/webhook"
     };
 
     const response = await mercadopago.preferences.create(preference);
-    res.status(200).send({
-      id: response.body.id,
-    });
+    res.status(200).send({ id: response.body.id });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error al crear la preferencia de pago" });
   }
 };
 
-const getState = (req, res) => {
-  res.status(200).send({
-    Payment: req.query.payment_id,
-    Status: req.query.status,
-    MerchantOrder: req.query.merchant_order_id,
-  });
-  console.log("Esto es payments ");
+// const getState= (req, res) => {
+//   res.status(200).send({
+//     Payment: req.query.payment_id,
+//     Status: req.query.status,
+//     MerchantOrder: req.query.merchant_order_id,
+// });
+
+// console.log("Esto es payments ");
+
+// };
+
+// const getwebhook = async (req, res) => {
+//     const payment =req.query;
+//     try {
+//     if(payment.type === "payment") {
+//     const data = await mercadopago.payment.findById(payment["data.id"])
+//     console.log(data)
+// }
+// res.sendStatus(204)
+//     } catch(error) {
+//         res.send({ error: error.message });
+//     }}
+
+const getSuccess = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Actualizar el estado de la orden a "realizada"
+    await axios.put(`${LOCAL_BACK}/order/${id}`, { order: "realizada" });
+
+    // Obtener la información de la orden
+    const response = await axios.get(`${LOCAL_BACK}/order/${id}`);
+    const orderData = response.data;
+    const orderemail = orderData.order_email;
+    // Enviar el correo electrónico
+    const template = orderConfirmation();
+    await transporter.sendMail({
+      from: `<Nueva notificación>, ${emailsend}`, // Remitente
+      to: `${orderemail}`, // Destinatario
+      subject: `Compra realizada con éxito!`, // Asunto del correo
+      html: `${template}`, // Cuerpo del correo en formato HTML
+    });
+
+    // Redirigir al cliente a la página de confirmación con el ID de la orden
+    res.redirect(`http://localhost:5173/confirmacion/${id}`);
+  } catch (error) {
+    res.send({ error: error.message });
+  }
 };
 
-// const postPayments = async (req, res) => {
-//     const { items, email, customeruser } = req.body;
-//     try{
-// 	const orden = (await axios.post(`${URL_DEPLOY}/order`, { customeruser, email, items })).data;
+const getFailure = async (req, res) => {
+  const { id } = req.params;
 
-//     const result = await createPayment(items, orden.id);
-//     res.send(result);
-//     console.log("Entra aca", error);
-// } catch (error) {
-//     res.status(404).send({ error: error.message });
-//   }
-// }
+  try {
+    await axios.put(`${LOCAL_BACK}/order/${id}`, { order: "cancelada" });
 
-// const getSuccess = async (req, res) => {
-//     const {id} = req.params;
+    const response = await axios.get(`${LOCAL_BACK}/order/${id}`);
+    const orderData = response.data;
+    const orderemail = orderData.order_email;
 
-//   try {
-//     await axios.put(`${URL_DEPLOY}/order/${id}`, {order: "realizada"})
-//     res.redirect(`${URL_DEPLOY}/api/mercadopago/pagos`);
-//   } catch (error) {
-//     res.send({ error: error.message });
-//   }};
+    const template = orderCancelation(); //
+    await transporter.sendMail({
+      from: `<Nueva notificación>, ${emailsend}`, // Remitente
+      to: `${orderemail}`, // Destinatario
+      subject: `Lo sentimos tu compra a sido cancelada!`, // Asunto del correo
+      html: `${template}`, // Cuerpo del correo en formato HTML
+    });
 
-//   const getFailure =async(req, res) => {
-//     const {id} = req.params;
+    res.redirect(`http://localhost:5173/confirmacion/${id}`);
+  } catch (error) {
+    res.send({ error: error.message });
+  }
+};
 
-//     try {
-//       await axios.put(`${URL_DEPLOY}/order/${id}`, {order: "cancelada"})
-//       res.redirect(`${URL_DEPLOY}/api/mercadopago/pagos`);
-//     } catch (error) {
-//       res.send({ error: error.message });
-//     }};
+const getPending = async (req, res) => {
+  const { id } = req.params;
 
-//     const getPending = async (req, res) => {
-//         const {id} = req.params;
+  try {
+    await axios.put(`${LOCAL_BACK}/order/${id}`, { order: "pendiente" });
 
-//         try {
-//           await axios.put(`${URL_DEPLOY}/order/${id}`, {order: "pendiente"})
-//           res.redirect(`${URL_DEPLOY}/api/mercadopago/pagos`);
-//         } catch (error) {
-//           res.send({ error: error.message });
-//         }
-//       };
+    const response = await axios.get(`${LOCAL_BACK}/order/${id}`);
+    const orderData = response.data;
+    const orderemail = orderData.order_email;
 
-//     async function createPayment(item, id) {
-//         const url = "https://api.mercadopago.com/checkout/preferences";
-//         const body = {
-//           items: item,
-//           back_urls: {
-//             failure: `${URL_DEPLOY}/payments/failure/${id}`,
-//             pending: `${URL_DEPLOY}/payments/pending/${id}`,
-//             success: `${URL_DEPLOY}/payments/success/${id}`,
-//           }
-//         };
-//         const payment = await axios.post(url, body, {
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
-//           },
-//         });
+    const template = orderPending(); //
+    await transporter.sendMail({
+      from: `<Nueva notificación>, ${emailsend}`, // Remitente
+      to: `${orderemail}`, // Destinatario
+      subject: `Tu compra esta casi lista!`, // Asunto del correo
+      html: `${template}`, // Cuerpo del correo en formato HTML
+    });
 
-//           const result = [
-//             payment.data.init_point,
-//             payment.data.id,
-//             payment.data.items.map((e) => {
-//             return e;
-//             }),
-//           ];
-//           console.log("Esto es payments", payment);
-//           return result;
-//       }
+    res.redirect(`http://localhost:5173/confirmacion/${id}`);
+  } catch (error) {
+    res.send({ error: error.message });
+  }
+};
 
-module.exports = { postPayments, getState };
+module.exports = { postPayments, getSuccess, getFailure, getPending };

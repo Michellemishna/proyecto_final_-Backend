@@ -1,11 +1,14 @@
 
 const { Router } = require("express");
-const { postPayments, getState} = require("../handlers/getPayments");
+const { postPayments, getSuccess, getFailure, getPending, getwebhook} = require("../handlers/getPayments");
 const router = Router();
 
 
 router.post("/", postPayments);
-router.get("/feedback", getState)
+router.get("/success/:id", getSuccess)
+router.get("/failure/:id", getFailure)
+router.get("/pending/:id", getPending)
+// router.post("/webhook", getwebhook)
 
 
 
