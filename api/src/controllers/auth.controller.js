@@ -23,14 +23,15 @@ const verifyGoogleAccessToken = async (google_access_token) => {
       const newCustomer = await Customer.create({
         name: "...",
         user: "...",
-        password: "contraseña de Google",
+        contraseña: "contraseña de Google",
         image: userInfo.picture,
         email: tokenInfo.email,
-        phone: "...",
+        telefono: "...",
         user_banned: false,
         default_shipping_address: "...",
         is_Active: true,
       });
+      console.log(newCustomer);
       return newCustomer;
     }
     return search;
