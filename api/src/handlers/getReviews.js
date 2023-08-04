@@ -1,9 +1,9 @@
 const { Product, Review } = require("../db");
 
 const postReview = async (req, res) => {
-    const { comment, calification, customerId, ProductId } = req.body
+    const { comment, calification, CustomerUser, ProductId } = req.body
     try{
-    if (!comment || !calification || !customerId || !ProductId) {
+    if (!comment || !calification || !CustomerUser || !ProductId) {
         res.status(404).send("Por favor revisa que la información este completa");
     } else {
         const post = await Review.create({

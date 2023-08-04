@@ -2,14 +2,10 @@ const { Customer, Order } = require("../db");
 //const { validarUser, jwt } = require("../controllers/loginCustomerContr");
 const jwt = require("jsonwebtoken");
 const { serialize } = require("cookie");
-<<<<<<< HEAD
-const bcrypt = require("bcrypt");
-=======
 const bcrypt = require("bcrypt")
 const transporter = require("../controllers/nodemailer");
 const {newCustomer} = require("../utils/newCustomer");
 const {emailsend} = process.env;
->>>>>>> 6234ac5cd24b7ac28768d206090d29a46ba6d4c7
 
 const getCustomers = async (req, res) => {
   const { name } = req.query;
@@ -112,11 +108,11 @@ const modifyCustomer = async (req, res) => {
 
 //eliminar customer
 const deleteCustomer = async (req, res) => {
-  const { id } = req.params;
+  const { user } = req.params;
   try {
-    const removed = await Customer.destroy({ where: { id } });
-    if (removed) return res.send("");
-    res.send("No existe ID");
+    const removed = await Customer.destroy({ where: { user } });
+    if (removed) return res.send("Ya no existe usuario");
+    res.send("No existe usuario");
   } catch (error) {
     res.json({ error: error.message });
   }
