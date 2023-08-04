@@ -2,14 +2,10 @@ const { Customer, Order } = require("../db");
 //const { validarUser, jwt } = require("../controllers/loginCustomerContr");
 const jwt = require("jsonwebtoken");
 const { serialize } = require("cookie");
-<<<<<<< HEAD
 const bcrypt = require("bcrypt");
-=======
-const bcrypt = require("bcrypt")
 const transporter = require("../controllers/nodemailer");
-const {newCustomer} = require("../utils/newCustomer");
-const {emailsend} = process.env;
->>>>>>> 6234ac5cd24b7ac28768d206090d29a46ba6d4c7
+const { newCustomer } = require("../utils/newCustomer");
+const { emailsend } = process.env;
 
 const getCustomers = async (req, res) => {
   const { name } = req.query;
@@ -81,8 +77,8 @@ const createCustomer = async (req, res) => {
     from: `<Nueva notificación>, ${emailsend}`,
     to: email,
     subject: `Bienvenido a TechNexus!`,
-    html: `${template}`
-  })
+    html: `${template}`,
+  });
 };
 
 const modifyCustomer = async (req, res) => {

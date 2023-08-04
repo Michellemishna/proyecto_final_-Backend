@@ -20,19 +20,19 @@ const verifyGoogleAccessToken = async (google_access_token) => {
     });
     // Combinar la información del token y la información del usuario en un solo objeto
     if (!search) {
-      const newCustomer = await Customer.create({
+      const newUsuario = await Customer.create({
         name: "...",
         user: "...",
         contraseña: "contraseña de Google",
         image: userInfo.picture,
-        email: tokenInfo.email,
         telefono: "...",
+        email: tokenInfo.email,
         user_banned: false,
         default_shipping_address: "...",
         is_Active: true,
       });
-      console.log(newCustomer);
-      return newCustomer;
+      console.log(newUsuario);
+      return newUsuario;
     }
     return search;
   } catch (error) {
@@ -52,15 +52,21 @@ const googleLogin = async (req, res) => {
   // if(!user){
   //   return res.status(404).json({response: "la cuenta no esta registrada"});
   // }
-  console.log(verifyToken);
+  //console.log(verifyToken);
   const token = jwt.sign(
     {
       id: verifyToken.user_id,
+      user: verifyToken.user,
       email: verifyToken.email,
-      name: verifyToken.name,
+      nombre: verifyToken.name,
       scope: verifyToken.scope,
-      picture: verifyToken.picture,
+      contraseña: verifyToken.contraseña,
+      telefono: verifyToken.telefono,
+      imagen: verifyToken.image,
+      estado: verifyToken.user_banned,
       issued_to: verifyToken.issued_to,
+      default_shipping_address: verifyToken.default_shipping_address,
+      is_Active: verifyToken.is_Active,
     },
     "secret",
     {
