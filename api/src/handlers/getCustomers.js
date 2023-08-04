@@ -108,11 +108,11 @@ const modifyCustomer = async (req, res) => {
 
 //eliminar customer
 const deleteCustomer = async (req, res) => {
-  const { id } = req.params;
+  const { user } = req.params;
   try {
-    const removed = await Customer.destroy({ where: { id } });
-    if (removed) return res.send("");
-    res.send("No existe ID");
+    const removed = await Customer.destroy({ where: { user } });
+    if (removed) return res.send("Ya no existe usuario");
+    res.send("No existe usuario");
   } catch (error) {
     res.json({ error: error.message });
   }
