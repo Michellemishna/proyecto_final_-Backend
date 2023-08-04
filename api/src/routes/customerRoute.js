@@ -13,6 +13,6 @@ router.get("/:id", getCustomerId);
 router.post("/", createCustomer);
 //router.post("/login", loginCustomers);
 router.put("/:id", modifyCustomer);
-router.delete("/:id", deleteCustomer);
+router.delete("/:user", deleteCustomer);
 
 module.exports = router;
