@@ -12,9 +12,14 @@ const verifyGoogleAccessToken = async (google_access_token) => {
     // Hacer la solicitud al endpoint de tokenInfo para obtener información básica del token
     const { data: tokenInfo } = await axios.get(tokenInfoUrl);
 
+    const userEmail = tokenInfo.email;
+    const atIndex = userEmail.indexOf("@");
+    const userName = atIndex !== -1 ? userEmail.slice(0, atIndex) : userEmail;
+
     // Hacer la solicitud al endpoint de userInfo para obtener más información del usuario, incluida la imagen
     const { data: userInfo } = await axios.get(userInfoUrl);
 
+    console.log(tokenInfo.email);
     const search = await Customer.findOne({
       where: { email: tokenInfo.email },
     });
@@ -22,16 +27,16 @@ const verifyGoogleAccessToken = async (google_access_token) => {
     if (!search) {
       const newUsuario = await Customer.create({
         name: "...",
-        user: "...",
-        contraseña: "contraseña de Google",
+        user: userName,
+        password: "contraseña de Google",
         image: userInfo.picture,
-        telefono: "...",
+        phone: "...",
         email: tokenInfo.email,
         user_banned: false,
         default_shipping_address: "...",
         is_Active: true,
       });
-      console.log(newUsuario);
+      console.log(newUsuario, "USUARIO CREADO");
       return newUsuario;
     }
     return search;
@@ -60,8 +65,8 @@ const googleLogin = async (req, res) => {
       email: verifyToken.email,
       nombre: verifyToken.name,
       scope: verifyToken.scope,
-      contraseña: verifyToken.contraseña,
-      telefono: verifyToken.telefono,
+      contraseña: verifyToken.password,
+      telefono: verifyToken.phone,
       imagen: verifyToken.image,
       estado: verifyToken.user_banned,
       issued_to: verifyToken.issued_to,

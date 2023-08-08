@@ -11,7 +11,7 @@ const isAuthenticated = (req, res, next) => {
     if (err) {
       return res.status(401).json({ cause: "No authorizated" });
     }
-    console.log(user); // El objeto del usuario decodificado
+    //console.log(user, "ACA SE CONSOLOGEA EL USUARIO"); // El objeto del usuario decodificado
     req.body.user = user;
     //console.log(user, "responde de jwt");
     next();
