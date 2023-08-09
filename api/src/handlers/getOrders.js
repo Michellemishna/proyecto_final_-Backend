@@ -1,14 +1,13 @@
 const { Customer, Order, Product } = require("../db");
 
 const getOrder= async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.query;;
   try {
-    if (!email) {
-      const result = await Order.findAll({ include: { all: true } })
+    let result = await Order.findAll({ include: { all: true } })
+    if (email) {
+      result = result.filter((order)=> order.order_email === email)
       res.send(result)
-    } else {
-      const result = await Order.findAll({ where: { order_email: email }, include: { all: true } })
-      res.send(result)
+      console.log(result)
     }
 
   } catch (error) {
