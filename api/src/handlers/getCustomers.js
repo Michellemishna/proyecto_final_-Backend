@@ -2,6 +2,10 @@ const { Customer, Order } = require("../db");
 //const { validarUser, jwt } = require("../controllers/loginCustomerContr");
 const jwt = require("jsonwebtoken");
 const { serialize } = require("cookie");
+const bcrypt = require("bcrypt");
+const transporter = require("../controllers/nodemailer");
+const { newCustomer } = require("../utils/newCustomer");
+const { emailsend } = process.env;
 
 const getCustomers = async (req, res) => {
   const { name } = req.query;
@@ -20,7 +24,7 @@ const getCustomers = async (req, res) => {
 const getCustomerId = async (req, res) => {
   const { id } = req.params;
   try {
-    const search = await Customer.findByPk(id, { include: { all: true }});
+    const search = await Customer.findByPk(id, { include: { all: true } });
     if (search) res.send(search);
     else res.status(404).send("No existe ID");
   } catch (error) {
@@ -33,7 +37,7 @@ const createCustomer = async (req, res) => {
 
   try {
     //validaciones
-    if (!password || !email)
+    if (!name || !user || !password || !email || !phone || !address)
       return res.status(404).send("No dejes ningun campo vacio");
 
     if (await Customer.findByPk(user))
@@ -46,12 +50,15 @@ const createCustomer = async (req, res) => {
     //   return res.json(loginUser);
     // }
 
+    //HASH DE CONTRASEÑA A BCRYPT PARA PROTECCION
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     //##############   VALIDAR USUARIO   ################
 
     const newCustomer = await Customer.create({
       name,
       user,
-      password,
+      password: hashedPassword, //Contraseña protegida
       image,
       email,
       phone,
@@ -63,6 +70,15 @@ const createCustomer = async (req, res) => {
   } catch (error) {
     res.send({ error: error.message });
   }
+
+  //CORREO PARA NUEVO USUARIO
+  const template = newCustomer();
+  await transporter.sendMail({
+    from: `<Nueva notificación>, ${emailsend}`,
+    to: email,
+    subject: `Bienvenido a TechNexus!`,
+    html: `${template}`,
+  });
 };
 
 const modifyCustomer = async (req, res) => {
@@ -92,11 +108,11 @@ const modifyCustomer = async (req, res) => {
 
 //eliminar customer
 const deleteCustomer = async (req, res) => {
-  const { id } = req.params;
+  const { user } = req.params;
   try {
-    const removed = await Customer.destroy({ where: { id } });
-    if (removed) return res.send("");
-    res.send("No existe ID");
+    const removed = await Customer.destroy({ where: { user } });
+    if (removed) return res.send("Ya no existe usuario");
+    res.send("No existe usuario");
   } catch (error) {
     res.json({ error: error.message });
   }

@@ -1,8 +1,8 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    'Customer',
+    "Customer",
     {
       name: {
         type: DataTypes.STRING,
@@ -10,8 +10,8 @@ module.exports = (sequelize) => {
       },
       user: {
         type: DataTypes.STRING,
-        unique:true,
-        primaryKey:true
+        unique: true,
+        primaryKey: true,
       },
       password: {
         type: DataTypes.STRING,
@@ -24,16 +24,19 @@ module.exports = (sequelize) => {
       },
       phone: {
         type: DataTypes.STRING,
-      },user_banned:{
-        type:DataTypes.BOOLEAN,
-        defaultValue:false
       },
-      is_Active:{
+      user_banned: {
         type: DataTypes.BOOLEAN,
-        defaultValue:true
+        defaultValue: false,
+      },
+      is_Active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
       },
       default_shipping_address: {
         type: DataTypes.TEXT,
       },
-    }, { timestamps: false });
+    },
+    { timestamps: false }
+  );
 };

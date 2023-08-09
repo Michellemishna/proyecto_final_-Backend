@@ -41,25 +41,11 @@ exports.orderConfirmation = () => {
                                                                                     <div align="center"
                                                                                         style="line-height:10px"><img
                                                                                             class="m_-5006345486347126279big CToWUd a6T"
-                                                                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxUj2CujmfnGs-cf8oJAMkRYTtoQlXUI25CA&usqp=CAU"
-                                                                                            style="display:block;height:auto;border:0;width:300px;max-width:100%; border-radius:50%;"
+                                                                                            src="https://st4.depositphotos.com/1001599/39398/v/600/depositphotos_393982818-stock-illustration-online-ordering-vector-concept-metaphor.jpg"
+                                                                                            style="display:block;height:auto;border:0;width:540px;max-width:100%; border-radius:50%;"
                                                                                             width="28" alt="Image"
                                                                                             title="Image" tabindex="0">
-                                                                                        <div class="a6S" dir="ltr"
-                                                                                            style="opacity: 0.01;">
-                                                                                            <div id=":rl"
-                                                                                                class="T-I J-J5-Ji aQv T-I-ax7 L3 a5q"
-                                                                                                title="Descargar"
-                                                                                                role="button"
-                                                                                                tabindex="0"
-                                                                                                aria-label="Descargar el archivo adjunto "
-                                                                                                data-tooltip-class="a1V">
-                                                                                                <div class="akn">
-                                                                                                    <div
-                                                                                                        class="aSK J-J5-Ji aYr">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
+                                                                                  
                                                                                         </div>
                                                                                     </div>
                                                                     </table>

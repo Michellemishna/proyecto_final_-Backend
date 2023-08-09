@@ -1,14 +1,49 @@
 const axios = require("axios");
 const { json } = require("express");
 const jwt = require("jsonwebtoken");
+const { Customer } = require("../db");
 //const secretToken = process.env.SECRET_TOKEN;
 
 const verifyGoogleAccessToken = async (google_access_token) => {
-  const { data } = await axios(
-    `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${google_access_token}`
-  );
-  console.log(data);
-  return data;
+  const tokenInfoUrl = `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${google_access_token}`;
+  const userInfoUrl = `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${google_access_token}`;
+
+  try {
+    // Hacer la solicitud al endpoint de tokenInfo para obtener información básica del token
+    const { data: tokenInfo } = await axios.get(tokenInfoUrl);
+
+    const userEmail = tokenInfo.email;
+    const atIndex = userEmail.indexOf("@");
+    const userName = atIndex !== -1 ? userEmail.slice(0, atIndex) : userEmail;
+
+    // Hacer la solicitud al endpoint de userInfo para obtener más información del usuario, incluida la imagen
+    const { data: userInfo } = await axios.get(userInfoUrl);
+
+    console.log(tokenInfo.email);
+    const search = await Customer.findOne({
+      where: { email: tokenInfo.email },
+    });
+    // Combinar la información del token y la información del usuario en un solo objeto
+    if (!search) {
+      const newUsuario = await Customer.create({
+        name: "...",
+        user: userName,
+        password: "contraseña de Google",
+        image: userInfo.picture,
+        phone: "...",
+        email: tokenInfo.email,
+        user_banned: false,
+        default_shipping_address: "...",
+        is_Active: true,
+      });
+      console.log(newUsuario, "USUARIO CREADO");
+      return newUsuario;
+    }
+    return search;
+  } catch (error) {
+    console.error("Error al verificar el token de Google:", error);
+    throw error;
+  }
 };
 
 const googleLogin = async (req, res) => {
@@ -22,15 +57,21 @@ const googleLogin = async (req, res) => {
   // if(!user){
   //   return res.status(404).json({response: "la cuenta no esta registrada"});
   // }
-  console.log(verifyToken);
+  //console.log(verifyToken);
   const token = jwt.sign(
     {
       id: verifyToken.user_id,
+      user: verifyToken.user,
       email: verifyToken.email,
-      name: verifyToken.name,
+      nombre: verifyToken.name,
       scope: verifyToken.scope,
-      audience: verifyToken.audience,
+      contraseña: verifyToken.password,
+      telefono: verifyToken.phone,
+      imagen: verifyToken.image,
+      estado: verifyToken.user_banned,
       issued_to: verifyToken.issued_to,
+      default_shipping_address: verifyToken.default_shipping_address,
+      is_Active: verifyToken.is_Active,
     },
     "secret",
     {
@@ -38,7 +79,7 @@ const googleLogin = async (req, res) => {
     }
   );
 
-  console.log(token, "este es el token");
+  //console.log(token, "este es el token");
   res.status(200).json({ result: token });
 };
 
