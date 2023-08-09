@@ -2,16 +2,18 @@ const jwt = require("jsonwebtoken");
 const { serialize } = require("cookie");
 const { Customer } = require("../db");
 //const { SECRET_TOKEN } = process.env;
-// const brcypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 const loginCustomer = async (req, res) => {
   const { password, email } = req.body;
-  const search = await Customer.findOne({ where: { email, password } });
+  const search = await Customer.findOne({ where: { email
+    // , password               // <-- si no se puede iniciar con contraseña normal DESCOMENTAR ESTO
+  } });
+  console.log(search, "usuario?")
   try {
     if (search) {
-      // const isPasswordValid = await brcypt.compare(password, search.password)
-
-      // if (isPasswordValid) {
+      const isPasswordValid = await bcrypt.compare(password, search.password) //<- si no se puede iniciar 
+      if (isPasswordValid) {                                                   // <- con contraseña normal *COMENTAR ESTO*
               // Autenticación exitosa, generar el token JWT
       const token = jwt.sign(
         {
@@ -48,7 +50,7 @@ const loginCustomer = async (req, res) => {
           estado: search.user_banned,
         },
       });
-    // }
+    } // <- si no se puede iniciar con contraseña normal *COMENTAR ESTO*
     } else {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
