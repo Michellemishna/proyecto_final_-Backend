@@ -7,6 +7,7 @@ const transporter = require("../controllers/nodemailer");
 const { orderConfirmation } = require("../utils/Confirmation");
 const { orderCancelation } = require("../utils/Cancelation");
 const { orderPending } = require("../utils/Pending");
+const {URL_FRONT, URL_BACK} = process.env
 
 // SDK MercadoPago
 const mercadopago = require("mercadopago");
@@ -19,7 +20,7 @@ const postPayments = async (req, res) => {
   const { items, email, CustomerUser } = req.body;
   try {
     const orden = (
-      await axios.post(`${LOCAL_BACK}/order`, { CustomerUser, email, items })
+      await axios.post(`${URL_BACK}/order`, { CustomerUser, email, items })
     ).data;
     console.log(orden);
     const items_md = items.map((item) => ({
@@ -33,9 +34,9 @@ const postPayments = async (req, res) => {
       CustomerUser: CustomerUser,
       email: email,
       back_urls: {
-        success: `http://localhost:3001/payment/success/${orden.id}`,
-        failure: `http://localhost:3001/payment/failure/${orden.id}`,
-        pending: `http://localhost:3001/payment/pending/${orden.id}`,
+        success: `${URL_BACK}/payment/success/${orden.id}`,
+        failure: `${URL_BACK}/payment/failure/${orden.id}`,
+        pending: `${URL_BACK}/payment/pending/${orden.id}`,
       },
       auto_return: "approved",
       // notification_url: "http://localhost:3001/webhook"
@@ -77,10 +78,10 @@ const getSuccess = async (req, res) => {
 
   try {
     // Actualizar el estado de la orden a "realizada"
-    await axios.put(`${LOCAL_BACK}/order/${id}`, { order: "realizada" });
+    await axios.put(`${URL_BACK}/order/${id}`, { order: "realizada" });
 
     // Obtener la información de la orden
-    const response = await axios.get(`${LOCAL_BACK}/order/${id}`);
+    const response = await axios.get(`${URL_BACK}/order/${id}`);
     const orderData = response.data;
     const orderemail = orderData.order_email;
     // Enviar el correo electrónico
@@ -93,7 +94,7 @@ const getSuccess = async (req, res) => {
     });
 
     // Redirigir al cliente a la página de confirmación con el ID de la orden
-    res.redirect(`http://localhost:5173/confirmacion/${id}`);
+    res.redirect(`${URL_FRONT}/confirmacion/${id}`);
   } catch (error) {
     res.send({ error: error.message });
   }
@@ -103,9 +104,9 @@ const getFailure = async (req, res) => {
   const { id } = req.params;
 
   try {
-    await axios.put(`${LOCAL_BACK}/order/${id}`, { order: "cancelada" });
+    await axios.put(`${URL_BACK}/order/${id}`, { order: "cancelada" });
 
-    const response = await axios.get(`${LOCAL_BACK}/order/${id}`);
+    const response = await axios.get(`${URL_BACK}/order/${id}`);
     const orderData = response.data;
     const orderemail = orderData.order_email;
 
@@ -117,7 +118,7 @@ const getFailure = async (req, res) => {
       html: `${template}`, // Cuerpo del correo en formato HTML
     });
 
-    res.redirect(`http://localhost:5173/confirmacion/${id}`);
+    res.redirect(`${URL_FRONT}/confirmacion/${id}`);
   } catch (error) {
     res.send({ error: error.message });
   }
@@ -127,9 +128,9 @@ const getPending = async (req, res) => {
   const { id } = req.params;
 
   try {
-    await axios.put(`${LOCAL_BACK}/order/${id}`, { order: "pendiente" });
+    await axios.put(`${URL_BACK}/order/${id}`, { order: "pendiente" });
 
-    const response = await axios.get(`${LOCAL_BACK}/order/${id}`);
+    const response = await axios.get(`${URL_BACK}/order/${id}`);
     const orderData = response.data;
     const orderemail = orderData.order_email;
 
@@ -141,7 +142,7 @@ const getPending = async (req, res) => {
       html: `${template}`, // Cuerpo del correo en formato HTML
     });
 
-    res.redirect(`http://localhost:5173/confirmacion/${id}`);
+    res.redirect(`${URL_FRONT}/confirmacion/${id}`);
   } catch (error) {
     res.send({ error: error.message });
   }

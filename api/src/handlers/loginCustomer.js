@@ -2,53 +2,59 @@ const jwt = require("jsonwebtoken");
 const { serialize } = require("cookie");
 const { Customer } = require("../db");
 //const { SECRET_TOKEN } = process.env;
-// const brcypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 const loginCustomer = async (req, res) => {
   const { password, email } = req.body;
-  const search = await Customer.findOne({ where: { email, password } });
+  const search = await Customer.findOne({
+    where: {
+      email,
+      // , password               // <-- si no se puede iniciar con contraseña normal DESCOMENTAR ESTO
+    },
+  });
+  console.log(search, "usuario?");
   try {
     if (search) {
-      // const isPasswordValid = await brcypt.compare(password, search.password)
+      const isPasswordValid = await bcrypt.compare(password, search.password); //<- si no se puede iniciar
+      if (isPasswordValid) {
+        // <- con contraseña normal *COMENTAR ESTO*
+        // Autenticación exitosa, generar el token JWT
+        const token = jwt.sign(
+          {
+            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expiración en 30 días
+            email: search.email,
+            nombre: search.name,
+            usuario: search.user,
+            imagen: search.image,
+            telefono: search.phone,
+            estado: search.user_banned,
+          },
+          "secret" // Aquí deberías usar un secreto más seguro y almacenarlo en una variable de entorno
+        );
 
-      // if (isPasswordValid) {
-      // Autenticación exitosa, generar el token JWT
-      const token = jwt.sign(
-        {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expiración en 30 días
-          email: search.email,
-          nombre: search.name,
-          usuario: search.user,
-          imagen: search.image,
-          telefono: search.phone,
-          estado: search.user_banned,
-        },
-        "secret" // Aquí deberías usar un secreto más seguro y almacenarlo en una variable de entorno
-      );
+        // Crear la cookie con el token JWT
+        const serialized = serialize("myTokenName", token, {
+          httpOnly: false,
+          secure: process.env.NODE_ENV == "production",
+          sameSite: "strict",
+          maxAge: 1000 * 60 * 60 * 24 * 30,
+          path: "/",
+        });
 
-      // Crear la cookie con el token JWT
-      const serialized = serialize("myTokenName", token, {
-        httpOnly: false,
-        secure: process.env.NODE_ENV == "production",
-        sameSite: "strict",
-        maxAge: 1000 * 60 * 60 * 24 * 30,
-        path: "/",
-      });
-
-      // Enviar la cookie en la respuesta y retornar información del usuario
-      res.setHeader("Set-Cookie", serialized);
-      return res.json({
-        token, // Puedes enviar el token en la respuesta si lo necesitas en el cliente
-        user: {
-          email: search.email,
-          nombre: search.name,
-          usuario: search.user,
-          imagen: search.image,
-          telefono: search.phone,
-          estado: search.user_banned,
-        },
-      });
-      // }
+        // Enviar la cookie en la respuesta y retornar información del usuario
+        res.setHeader("Set-Cookie", serialized);
+        return res.json({
+          token, // Puedes enviar el token en la respuesta si lo necesitas en el cliente
+          user: {
+            email: search.email,
+            nombre: search.name,
+            usuario: search.user,
+            imagen: search.image,
+            telefono: search.phone,
+            estado: search.user_banned,
+          },
+        });
+      } // <- si no se puede iniciar con contraseña normal *COMENTAR ESTO*
     } else {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
