@@ -80,7 +80,8 @@ const googleLogin = async (req, res) => {
   );
 
   //console.log(token, "este es el token");
-  res.status(200).json({ result: token });
+  console.log(verifyToken);
+  res.status(200).json({ result: token, user: verifyToken });
 };
 
 const allProduts = (req, res) => {

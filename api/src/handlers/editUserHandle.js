@@ -24,4 +24,4 @@ const editUsuarios = async (req, res) => {
   }
 };
 
-module.exports = editUsuarios;
+module.exports = { editUsuarios };

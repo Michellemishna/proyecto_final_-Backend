@@ -20,6 +20,7 @@ const paymentsRoute = require("./paymentsRoute");
 const mercadopagoRoute = require("./mercadopagoRoute");
 const carritoRoute = require("./cartRoute");
 const editUsuarios = require("./userEdit.js");
+const baneoUsuarios = require("./baneoUser");
 
 router.use("/products", productRoute);
 router.use("/categories", categoriesRoute);
@@ -39,6 +40,7 @@ router.use("/logout", logoutUsuarios);
 router.use("/token", dataByToken);
 router.use("/auth", authRoutes);
 router.use("/edit", editUsuarios);
+router.use("/baneo", baneoUsuarios);
 // router.use("/payment", paymentsRoute);
 
 router.use("*", function (req, res) {

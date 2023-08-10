@@ -12,7 +12,7 @@ const loginCustomer = async (req, res) => {
       // const isPasswordValid = await brcypt.compare(password, search.password)
 
       // if (isPasswordValid) {
-              // Autenticación exitosa, generar el token JWT
+      // Autenticación exitosa, generar el token JWT
       const token = jwt.sign(
         {
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expiración en 30 días
@@ -48,7 +48,7 @@ const loginCustomer = async (req, res) => {
           estado: search.user_banned,
         },
       });
-    // }
+      // }
     } else {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
