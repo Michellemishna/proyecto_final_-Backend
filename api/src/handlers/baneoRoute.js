@@ -3,7 +3,7 @@ const { banearUser } = require("../controllers/baneoController");
 
 const baneoUsuarios = async (req, res) => {
   const { email } = req.body;
-
+  console.log(email);
   try {
     const userBaneado = await banearUser(email);
     res.status(200).json(userBaneado);
